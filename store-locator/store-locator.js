@@ -17,7 +17,7 @@ map.on('load', () => {
   
   map.addSource('dbData', {
     type: 'geojson',
-    data: filesPath + '/store-locator/getAllLocationsGeoJson.php',
+    data: filesPath + '/store-locator/parts/getAllLocationsGeoJson.php',
     cluster: true,
     clusterMaxZoom: 14, 
     clusterRadius: 50
@@ -49,16 +49,19 @@ map.on('load', () => {
   });
 
   map.on('click', 'unclustered-point', (e) => {
-    showPopup(e, fly = false);
     showListingOnSidebar(e);
+    flyToPoint(e.lngLat);
+    showPopup(e);
   });
 
+  
+
   map.on('mouseover', 'unclustered-point', (e) => {
-    showPopup(e, fly = false)
+    showPopup(e)
   });
 
   map.on('mouseout', 'unclustered-point', (e) => {
-    showPopup(e, fly = false);
+    closePopups();
   });
 
   //set cursor pointer on points
@@ -118,7 +121,7 @@ map.on('load', () => {
   });
    
 
-   map.loadImage(filesPath + '/store-locator/pin-and-shadow.png',
+   map.loadImage(filesPath + '/store-locator/icons/pin-and-shadow.png',
     (error, image) => {
       if (error) throw error;
 
@@ -139,12 +142,24 @@ map.on('load', () => {
     }
   ); //loadImage()
 
-
-  var framesPerSecond = 15; 
-  var initialTranslate = 0;
-  var translate = initialTranslate;
-  var maxTranslate = 30;
-
+  // Add geolocate control to the map.
+  map.addControl(
+    new mapboxgl.GeolocateControl({
+    positionOptions: {
+    enableHighAccuracy: true
+    },
+    // When active the map will receive updates to the device's location as it changes.
+    trackUserLocation: true,
+    // Draw an arrow next to the location dot to indicate which direction the device is heading.
+    showUserHeading: true
+    })
+  );
+  
+    function closePopups() {
+      const popUps = document.getElementsByClassName('mapboxgl-popup');
+      /** Check if there is already a popup on the map and if so, remove it */
+      if (popUps[0]) popUps[0].remove();
+    }
 
   function createPopUp(currentFeature) {
     const popUps = document.getElementsByClassName('mapboxgl-popup');
@@ -157,16 +172,12 @@ map.on('load', () => {
     const popup = new mapboxgl.Popup({ closeOnClick: true, closeOnMove:true, offset: 17 })
       .setLngLat(currentFeature.geometry.coordinates)
       .setHTML(`<h3>${currentFeature.properties.address}, ${currentFeature.properties.postcode}</h3>
-                <h4>${currentFeature.properties.link_name}</h4>
-                <div class="map-inspect-location">
-                  <span class="location-id" data-id="${currentFeature.properties.link_id}">← Vidi</span>
-                </div>`
+                <h4>${currentFeature.properties.link_name}</h4>`
               )
       .addTo(map);
   }
 
-  function showPopup(event, fly = false) {
-    /* Determine if a feature in the "locations" layer exists at that point. */
+  function showPopup(event) {
     const features = map.queryRenderedFeatures(event.point, {
       layers: ['unclustered-point']
     });
@@ -178,10 +189,13 @@ map.on('load', () => {
 
   }
 
-  function flyToStore(currentFeature) {
+
+  function flyToPoint(lngLat) {
+    console.log(lngLat)
     map.flyTo({
-      center: currentFeature.geometry.coordinates,
-      zoom: 15
+      center: [lngLat.lng, lngLat.lat],
+      zoom: 17,
+      speed: 1
     });
   }
 
@@ -199,7 +213,18 @@ map.on('load', () => {
   }
 
   function displayListingOnSidebar(id) {
+    
     $('#listings').append(`<h3>Link_id = ${id}</h3>`);
+    $.ajax({
+      method: "POST",
+      url: filesPath + '/store-locator/parts/getProfileWithId.php?id=' + id,
+      success: function(data) {
+        profile = JSON.parse(data);
+        console.log(profile);
+      }
+    });
+
+
     
   }
 

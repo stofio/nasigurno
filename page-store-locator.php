@@ -42,21 +42,13 @@ Template Name: Store Locator
             <div class="wrap"><img src="<?php echo get_stylesheet_directory_uri() . '/store-locator/icons/phone.svg' ?>" width="15"></div>
             <a onclick="#" href="tel:011/2442-801">011/2442-801</a>
         </li>
-            <li>
-                <div class="wrap"></div>
-                <a onclick="#" href="tel:064/6596-880">064/6596-880</a>
-            </li>
-                <li>
-            <div class="wrap"><img src="<?php echo get_stylesheet_directory_uri() . '/store-locator/icons/clock.svg' ?>" width="15"></div>
-            <a class="not-link" name="opening_hours_label" data-opening-hours="[{&quot;id&quot;: 108, &quot;day&quot;: &quot;Ponedeljak&quot;, &quot;shifts&quot;: [&quot;0900:1800&quot;]},{&quot;id&quot;: 109, &quot;day&quot;: &quot;Utorak&quot;, &quot;shifts&quot;: [&quot;0900:1800&quot;]},{&quot;id&quot;: 110, &quot;day&quot;: &quot;Sreda&quot;, &quot;shifts&quot;: [&quot;0900:1800&quot;]},{&quot;id&quot;: 111, &quot;day&quot;: &quot;Četvrtak&quot;, &quot;shifts&quot;: [&quot;0900:1800&quot;]},{&quot;id&quot;: 112, &quot;day&quot;: &quot;Petak&quot;, &quot;shifts&quot;: [&quot;0900:1800&quot;]},{&quot;id&quot;: 113, &quot;day&quot;: &quot;Subota&quot;, &quot;shifts&quot;: [&quot;0900:1500&quot;]},{&quot;id&quot;: 114, &quot;day&quot;: &quot;Nedelja&quot;, &quot;shifts&quot;: [&quot;0900:1500&quot;]}]" data-current-holiday="" href="#radno-vreme"></a>
-        </li>
          <li>
             <div class="wrap"><img src="<?php echo get_stylesheet_directory_uri() . '/store-locator/icons/web.svg' ?>" width="19"></div>
             <a href="#">website.com</a>
         </li>
     </ul>
     <a href="#" class="button flex-align-center">
-        Informacije
+        Dodatne informacije
     </a>
     </div>
   </div>
@@ -66,9 +58,6 @@ Template Name: Store Locator
 <div class="">
   <div id="nasigurno-map" class="nasigurno-map"></div>
     <img class="map-logo" src="<?php echo esc_url( wp_get_attachment_image_src( get_theme_mod( 'custom_logo' ), 'full' )[0] ); ?>" />
-  <div class="my-location" title="Tvoja lokacija">
-      <img src="<?php echo get_stylesheet_directory_uri() ?> /store-locator/my-location.svg">
-   </div>
 </div>
 
 
