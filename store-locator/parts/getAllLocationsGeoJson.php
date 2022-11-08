@@ -4,7 +4,21 @@ include_once '../../../../../wp-load.php';
 global $wpdb;
 
 
-$r = $wpdb->get_results( "SELECT link_id, link_name, address, postcode, lat, lng FROM `jos_mt_links` GROUP BY lat, lng" );
+$rr = $wpdb->get_results( "SELECT link_id, link_name, address, postcode, lat, lng FROM `jos_mt_links` GROUP BY lat, lng" );
+
+
+$r = $wpdb->get_results( "SELECT `id`,
+                            `post_id`,
+                            `post_name`,
+                            `drzava`,
+                            `grad`,
+                            `address`,
+                            `postcode`,
+                            `url`,
+                            ST_X(center_point) as lat, 
+                            ST_Y(center_point) as lng 
+                            FROM `wp_nasigurno_lokacije` GROUP BY lat, lng" );
+
 
 //
 //filter duplicate coordinates
@@ -47,10 +61,13 @@ foreach ($r as $key => $value) {
             )
         ),
         "properties" => array(
-        	"link_id" => $value->link_id,
-        	"link_name" => $value->link_name,
+        	"link_id" => $value->id,
+        	"link_name" => $value->post_name,
         	"address" => $value->address,
+        	"drzava" => $value->drzava,
+        	"grad" => $value->grad,
         	"postcode" => $value->postcode,
+            "url" => $value->url
          )       
     );
 

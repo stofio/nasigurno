@@ -14,12 +14,28 @@
 
 ?>
 
-<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    </div> <!--wrapper-->
+</main>
+<footer>
+    <section>
+        <div class="content-wrap">
+            <img class="foot-logo" width="80"
+                src="<?php echo esc_url( wp_get_attachment_image_src( get_theme_mod( 'custom_logo' ), 'full' )[0] ); ?>" />
 
-<script type="text/javascript" src="<?php echo get_template_directory_uri()?>/js/scripts.js"></script>
+            <ul class="links flex-wrap">
+                <li><a href="#">Mapa</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Pomoć</a></li>
+                <li><a href="#">M&V Grupacija</a></li>
+                <li><a href="#">Kontakt</a></li>
+            </ul>
+        </div>
+    </section>
+</footer>
 
 
 <?php wp_footer(); ?>
 
 </body>
+
 </html>

@@ -1,16 +1,50 @@
 <?php
-add_theme_support('menus');
 
-add_theme_support( 'title-tag' );
+//supports
+function theme_supports() {
+    add_theme_support('menus');
+    add_theme_support( 'title-tag' );
+    add_theme_support( 'post-thumbnails' );
+    add_theme_support( 'custom-logo' );
+    show_admin_bar(false);
+}
+add_action( 'init', 'theme_supports' );
 
-show_admin_bar(false);
 
-add_theme_support( 'post-thumbnails' );
+//scripts
+function theme_scripts() {
+    if(!is_admin()) {
+        wp_enqueue_script('jquery3', 'https://code.jquery.com/jquery-3.6.1.min.js');
+        //wp_enqueue_script('gen-scripts', get_template_directory_uri().'/js/scripts.js');
+        wp_enqueue_style( 'my-style', get_template_directory_uri() . '/style.css');
+    }
+}
+add_action( 'init', 'theme_scripts' );
 
-add_theme_support( 'custom-logo' );
+//google api key
+function my_acf_init() {    
+    acf_update_setting('google_api_key', 'AIzaSyAE-ObLvFjdAKqLdKVzhHf02YAObwRmsjA');
+}
+add_action('acf/init', 'my_acf_init');
 
-function remove_wordpress_version_number() {
-    return '';
+/**
+ * function to remove initial brackets and number from categories and subcategories
+ */
+function removeCatBrackets($catName) {
+    if($catName[0] == '[') {
+        for($i=0; $i < strlen($catName); $i++) {
+            if($catName[$i] == ']' ) {
+                //remove from bracket to closed bracket
+                $catName = substr($catName, $i + 1); 
+                
+                if($catName[0] == ' ') {
+                    //remove space
+                    $catName = substr($catName, 1);
+                }
+            }
+        }
+    }
+    return $catName;
 }
 
 // Add Menu
@@ -53,12 +87,9 @@ function fix_svg() {
 add_action( 'admin_head', 'fix_svg' );
 
 
-
-
-
 /**
  *
- * Creates custom post type 
+ * CPT oglasi
  *
  */
 function create_oglasi() {
@@ -80,10 +111,10 @@ function create_oglasi() {
         'public' => true, // show in admin panel?
         'menu_position' => 2,
         'supports' => array( 'title', 'thumbnail'),
-        'taxonomies' => array( '' ),
+        'taxonomies' => array('post_tag'),
         'has_archive' => true,
         'capability_type' => 'post',
-        'menu_icon'   => 'dashicons-format-aside',
+        'menu_icon'   => 'dashicons-location',
         'rewrite' =>  array( 'slug' => 'oglasi', 'with_front' => false )
     ));
 }
@@ -92,7 +123,7 @@ add_action( 'init', 'create_oglasi' );
 
 /**
  *
- * Creates custom taxonomy  
+ * Taxonomy oglasi
  *
  */
 add_action( 'init', 'create_oglasi_taxonomy', 0 );
@@ -119,9 +150,42 @@ function create_oglasi_taxonomy() {
         'show_ui'           => true,
         'show_admin_column' => true,
         'query_var'         => true,
+        'supports' => array( 'title', 'thumbnail'),
         'rewrite'           => array( 'slug' => 'oblast', 'hierarchical' => true )
     ));
 };
+
+
+/**
+ *
+ * CPT lokacije
+ *
+ */
+function create_lokacije() {
+    register_post_type('drzave', array(
+        'labels' => array(
+            'name'            => __( 'Drzave', 'theme-domain' ),
+            'singular_name'   => __( 'Drzava', 'theme-domain'  ),
+            'add_new'         => __( 'Nova Drzava', 'theme-domain'  ),
+            'add_new_item'    => __( 'Dodaj Drzavu', 'theme-domain'  ),
+            'edit'            => __( 'Izmeni', 'theme-domain'  ),
+            'edit_item'       => __( 'Izmeni Drzavu', 'theme-domain'  ),
+            'new_item'        => __( 'Nova Drzava', 'theme-domain'  ),
+            'all_items'       => __( 'Sve Drzave', 'theme-domain'  ),
+            'view'            => __( 'Vidi', 'theme-domain'  ),
+            'view_item'       => __( 'Vidi Drzavu', 'theme-domain'  ),
+            'search_items'    => __( 'Traži Drzavu', 'theme-domain'  ),
+            'not_found'       => __( 'Drzava nije pronadjena', 'theme-domain'  ),
+        ),
+        'public' => true, // show in admin panel?
+        'menu_position' => 2,
+        'supports' => array( 'title', 'thumbnail'),
+        'capability_type' => 'post',
+        'menu_icon'   => 'dashicons-location-alt',
+        'rewrite' =>  array( 'slug' => 'drzave', 'with_front' => false )
+    ));
+}
+add_action( 'init', 'create_lokacije' );
 
 
 //add custom user - Korisnik
@@ -130,8 +194,39 @@ function customUsers() {
     add_role('korisnik',  __( 'Korisnik'  ));
 }
 
+add_action( 'init', 'removeAdminBarForKorisnik' );
+function removeAdminBarForKorisnik() {
+    $user = wp_get_current_user();
+    if(in_array( 'Korisnik', (array) $user->roles )){
+        show_admin_bar(false);
+    }
+}
 
 
+/**
+ * on post save/update, update the locations table
+ */
+add_action( 'save_post_oglasi', 'update_locations_table', 10, 3 );
 
+function update_locations_table( $post_ID, $post, $update ) {
+  //error_log("Oglas updated: ");
+  //error_log(print_r( $post, true ));
 
+  //get new oglasi data
+  $meta = get_post_meta($post_ID);
 
+  $lat = unserialize($meta['mapa'][0])['lat'];
+  $lng = unserialize($meta['mapa'][0])['lng'];
+  $postname = $post->post_name;
+  $drzava = $meta['drzava'][0];
+  $grad = $meta['grad'][0];
+  $address = $meta['adresa'][0];
+  $postcode = $meta['postanski_broj'][0];
+  $latlng = "POINT( $lat $lng )";
+  
+  global $wpdb;
+    $results = $wpdb->get_results( "INSERT INTO wp_nasigurno_lokacije (`post_id`, `post_name`, `drzava`, `grad`, `address`, `postcode`, `center_point`) 
+        VALUES ($post_ID, '$postname', '$drzava', '$grad', '$address', '$postcode', ST_GeomFromText('POINT($lat $lng)') )" );
+
+   // error_log(print_r( $results, true ));
+}

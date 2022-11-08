@@ -1,7 +1,7 @@
 (function() {
 
 var filesPath = THEME_DIR;
-
+var currentMarkerData;
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoic3RvZmlvIiwiYSI6ImNrZ3duNHhmdDA0MnoycXBmYWVlYjJtMHgifQ.eS9K2EYvkEEDASW4SBEjdQ';
 
@@ -50,18 +50,19 @@ map.on('load', () => {
 
   map.on('click', 'unclustered-point', (e) => {
     showListingOnSidebar(e);
-    flyToPoint(e.lngLat);
-    showPopup(e);
+    showPopup(e.point.x, e.point.y);
+    flyToPoint(e);
+    currentMarkerData = { lngLat: e.lngLat };
+                    
   });
 
-  
 
   map.on('mouseover', 'unclustered-point', (e) => {
-    showPopup(e)
+    showPopup(e.point.x, e.point.y);
   });
 
   map.on('mouseout', 'unclustered-point', (e) => {
-    closePopups();
+    //closePopups();
   });
 
   //set cursor pointer on points
@@ -96,11 +97,11 @@ map.on('load', () => {
       'circle-radius': [
         'step',
         ['get', 'point_count'],
-        20,
+        10,
         100,
-        30,
+        20,
         750,
-        40
+        30
       ]
       }
   });
@@ -113,21 +114,23 @@ map.on('load', () => {
     filter: ['has', 'point_count'],
     layout: {
       'text-field': '{point_count_abbreviated}',
-      'text-size': 14
+      'text-size': 12
     }, 
     paint: {
       "text-color": "#ffffff"
     }
   });
    
-
+   /**
+    * red marker
+    */
    map.loadImage(filesPath + '/store-locator/icons/pin-and-shadow.png',
     (error, image) => {
       if (error) throw error;
 
       // Add the image to the map style.
       map.addImage('nasigurnoMarker', image);
-
+ 
       //add layer
       map.addLayer({
         id: 'unclustered-point',
@@ -136,11 +139,13 @@ map.on('load', () => {
         source: 'dbData',
         layout: {
           'icon-image': 'nasigurnoMarker', // reference the image
-          'icon-size': 1
+          'icon-size': .8
         }
       })
     }
   ); //loadImage()
+
+
 
   // Add geolocate control to the map.
   map.addControl(
@@ -169,7 +174,7 @@ map.on('load', () => {
     /*
      * set link id on click
     */
-    const popup = new mapboxgl.Popup({ closeOnClick: true, closeOnMove:true, offset: 17 })
+    const popup = new mapboxgl.Popup({  closeOnMove:false, offset: 17 })
       .setLngLat(currentFeature.geometry.coordinates)
       .setHTML(`<h3>${currentFeature.properties.address}, ${currentFeature.properties.postcode}</h3>
                 <h4>${currentFeature.properties.link_name}</h4>`
@@ -177,8 +182,8 @@ map.on('load', () => {
       .addTo(map);
   }
 
-  function showPopup(event) {
-    const features = map.queryRenderedFeatures(event.point, {
+  function showPopup(x, y) {
+    const features = map.queryRenderedFeatures([x, y], {
       layers: ['unclustered-point']
     });
      /* If it does not exist, return */
@@ -186,16 +191,14 @@ map.on('load', () => {
     const clickedPoint = features[0];
 
     createPopUp(clickedPoint);
-
   }
 
 
-  function flyToPoint(lngLat) {
-    console.log(lngLat)
+
+  function flyToPoint(e) {
     map.flyTo({
-      center: [lngLat.lng, lngLat.lat],
-      zoom: 17,
-      speed: 1
+      center: [e.lngLat.lng, e.lngLat.lat],
+      speed: 2
     });
   }
 
