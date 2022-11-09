@@ -1,19 +1,71 @@
 (function () {
 
   var filesPath = THEME_DIR;
+  var currentDrzava = DRZAVA;
 
   mapboxgl.accessToken = 'pk.eyJ1Ijoic3RvZmlvIiwiYSI6ImNrZ3duNHhmdDA0MnoycXBmYWVlYjJtMHgifQ.eS9K2EYvkEEDASW4SBEjdQ';
 
-  const bounds = [
-    [17.965353, 41.745445], // Southwest coordinates
-    [23.704046, 46.670879] // Northeast coordinates
-  ];
+  console.log(currentDrzava)
+
+  //https://www.latlong.net/
+  switch(currentDrzava) {
+    case 'Srbija':
+      var bounds = [
+        [17.965353, 41.745445], // west, south
+        [23.704046, 46.670879] // east, north
+      ];
+      var thecenter = [20.994273, 44.086444];
+      var mapStyle = 'mapbox://styles/stofio/cl83ka2bd005414o6t7wcbxrd';
+    break;
+    case 'Bosna i Hercegovina':
+      var bounds = [
+        [15.395171, 42.296993], // west, south
+        [19.968535, 45.447969] // east, north
+      ];
+      var thecenter = [17.948761, 44.172047];
+      var mapStyle = 'mapbox://styles/stofio/cl83ka2bd005414o6t7wcbxrd';
+    break;
+    case 'Makedonija':
+      var bounds = [
+        [20.317890, 40.667489], // west, south
+        [23.198230, 42.459307] // east, north
+      ];
+      var thecenter = [21.725247, 41.594263];
+      var mapStyle = 'mapbox://styles/stofio/cl83ka2bd005414o6t7wcbxrd';
+    break;
+    case 'Hrvatska':
+      var bounds = [
+        [12.971222, 42.365393], // west, south
+        [19.677357, 46.716092] // east, north
+      ];
+      var thecenter = [16.328234, 45.684777];
+      var mapStyle = 'mapbox://styles/stofio/cl83ka2bd005414o6t7wcbxrd';
+    break;
+    case 'Slovenija':
+      var bounds = [
+        [13.285109, 45.295841], // west, south
+        [16.707936, 46.930924] // east, north
+      ];
+      var thecenter = [14.554877, 46.048157];
+      var mapStyle = 'mapbox://styles/stofio/cl83ka2bd005414o6t7wcbxrd';
+      break;
+    case 'Crna Gora':
+      var bounds = [
+        [18.357350, 41.662333], // west, south
+        [20.418662, 43.605940] // east, north
+      ];
+      var thecenter = [19.220352, 42.631622];
+      var mapStyle = 'mapbox://styles/stofio/cl83ka2bd005414o6t7wcbxrd';
+      break;
+    default:
+      // def
+  }
 
   const map = new mapboxgl.Map({
     container: 'drzava-map',
-    style: 'mapbox://styles/stofio/cl83ka2bd005414o6t7wcbxrd',
-    center: [20.994273, 44.086444],
-    zoom: 7,
+    style: mapStyle,
+    center: thecenter,
+    zoom: 8,
     maxBounds: bounds 
   });
 
@@ -21,7 +73,7 @@
 
     map.addSource('dbData', {
       type: 'geojson',
-      data: filesPath + '/scripts/get_drzava_locations.php',
+      data: filesPath + '/scripts/get_drzava_locations.php?drzava=' + currentDrzava,
       cluster: true,
       clusterMaxZoom: 14, 
       clusterRadius: 50

@@ -3,6 +3,20 @@
 Template Name: Moj Profil
 */
 ?>
+
+<?php 
+  $user_ID = get_current_user_id();
+  if(!$user_ID) {
+    header("Location: /login"); 
+    exit();
+  }
+
+  global $current_user;
+  wp_get_current_user();
+
+?>
+
+
 <?php get_header(); ?>
 
 <div class="container">
@@ -12,143 +26,154 @@ Template Name: Moj Profil
             <h1>Podešavanja</h1>
         </div>
 
-        <div class="row-flex fl">
+        <div class="row-flex fl w-100">
             <div class="col-md-8">
-
-                <div class="box" id="mojiOglasi">
-                    <p><input type="submit" class="button button-blue" id="" value="+ Dodaj oglas" name=""></p>
-                    <h2>Moji oglasi</h2>
-                    <div class="oglasi-list">
-                        <ul class="my-oglasi">
-
-                            <li class="my-oglas-list">
-                                <a href="#" class="my-oglasi-img">
-                                    <img
-                                        src="https://blooloop.com/wp-content/uploads/2018/02/IMG-worlds-of-adventure.jpg">
-                                </a>
-                                <div class="my-oglasi-descr">
-                                    <a href="#" title="">
-                                        <h3>„Bubijada“ u Šapcu | Turistički kalendar Srbije</h3>
-                                    </a>
-                                    <div class="stars">stars</div>
-                                    <ul class="info">
-                                        <li>
-                                            <div class="wrap">
-                                                <img src="<?php echo get_stylesheet_directory_uri() . '/store-locator/icons/pin.svg' ?>"
-                                                    width="14">
-                                            </div>
-
-                                            <p>Mije Kovačevića 10, 11120 Beograd (Palilula)</p>
-                                        </li>
-                                        <li>
-                                            <div class="wrap"><img
-                                                    src="<?php echo get_stylesheet_directory_uri() . '/store-locator/icons/phone.svg' ?>"
-                                                    width="11"></div>
-                                            <p>011/2442-801</p>
-                                        </li>
-                                    </ul>
-                                    <span class="my-oglasi-date">
-                                        <img src="<?php echo get_template_directory_uri() ?>/icons/tags.svg" />
-                                        Kategorija:
-                                    </span>
-                                </div>
-                                <div class="my-oglas-options">
-                                    <img src="<?php echo get_template_directory_uri() ?>/icons/dots.svg">
-                                    <ul class="options-menu">
-                                        <li><a href="#">Izmeni oglas</a></li>
-                                        <li><a href="#">Obriši oglas</a></li>
-                                    </ul>
-                                </div>
-
-                            </li>
-
-                            <li class="my-oglas-list">
-                                <a href="#" class="my-oglasi-img">
-                                    <img
-                                        src="https://blooloop.com/wp-content/uploads/2018/02/IMG-worlds-of-adventure.jpg">
-                                </a>
-                                <div class="my-oglasi-descr">
-                                    <a href="#" title="">
-                                        <h3>„Bubijada“ u Šapcu | Turistički kalendar Srbije</h3>
-                                    </a>
-                                    <div class="stars">stars</div>
-                                    <ul class="info">
-                                        <li>
-                                            <div class="wrap">
-                                                <img src="<?php echo get_stylesheet_directory_uri() . '/store-locator/icons/pin.svg' ?>"
-                                                    width="14">
-                                            </div>
-
-                                            <p>Mije Kovačevića 10, 11120 Beograd (Palilula)</p>
-                                        </li>
-                                        <li>
-                                            <div class="wrap"><img
-                                                    src="<?php echo get_stylesheet_directory_uri() . '/store-locator/icons/phone.svg' ?>"
-                                                    width="11"></div>
-                                            <p>011/2442-801</p>
-                                        </li>
-                                    </ul>
-                                    <span class="my-oglasi-date">
-                                        <img src="<?php echo get_template_directory_uri() ?>/icons/tags.svg" />
-                                        Kategorija:
-                                    </span>
-                                </div>
-                                <div class="my-oglas-options">
-                                    <img src="<?php echo get_template_directory_uri() ?>/icons/dots.svg">
-                                    <ul class="options-menu">
-                                        <li><a href="#">Izmeni oglas</a></li>
-                                        <li><a href="#">Obriši oglas</a></li>
-                                    </ul>
-                                </div>
-
-                            </li>
-
-                        </ul>
-                    </div>
-                    <div class="more-btn">
-                        <a href="#">Vidi sve moje oglase &#10148;</a>
-                    </div>
-
-                </div>
 
                 <div class="box" id="mojProfil">
                     <h2>Moj profil</h2>
-                    <form class="theme-form">
+
+                    <form id="profileForm" class="theme-form"
+                        action="<?php echo get_template_directory_uri() ?>/scripts/save-user-data.php">
+                        <input type="hidden" name="user_id" value="<?php echo $user_ID ?>" />
                         <p>
-                            <label>Puno ime:</label>
-                            <input id="" type="text" size="20" value="" name="">
+                            <label>Ime:</label>
+                            <input type="text" size="20" value="<?php echo $current_user->user_firstname ?>"
+                                name="name">
                         </p>
                         <p>
-                            <label>Korisničko ime:</label>
-                            <input id="" type="text" size="20" value="" name="">
+                            <label>Prezime:</label>
+                            <input type="text" size="20" value="<?php echo $current_user->user_lastname ?>"
+                                name="surname">
+                        </p>
+                        <p>
+                            <label>Korisničko ime (login):</label>
+                            <input type="text" size="20" value="<?php echo $current_user->user_login ?>"
+                                name="username">
                         </p>
                         <p>
                             <label>Email:</label>
-                            <input id="" type="email" size="20" value="" name="">
+                            <input type="email" size="20" value="<?php echo $current_user->user_email ?>" name="email"
+                                class="input-disabled" disabled>
                         </p>
                         <p><input type="submit" class="button button-blue" id="" value="Sačuvaj podatke" name=""></p>
                     </form>
+
+                    <script>
+                    $(document).ready(function() {
+                        var $form = $('#profileForm');
+                        $form.submit(function() {
+                            $('.errorMsg').remove();
+                            $('.successMsg').remove();
+                            $.post($(this).attr('action'), $(this).serialize(), function(response) {
+                                $form.prepend(
+                                    '<p class="successMsg">Uspešno sačuvani podaci</p>');
+                                setTimeout(() => {
+                                    $('.successMsg').remove();
+                                }, 3000);
+                            });
+                            return false;
+                        });
+                    });
+                    </script>
 
                 </div>
 
                 <div class="box" id="promeniLozinku">
                     <h2>Promeni lozinku</h2>
-                    <form class="theme-form change-password">
+                    <form id="passwForm" class="theme-form change-password"
+                        action="<?php echo get_template_directory_uri() ?>/scripts/save-new-passoword.php">
+                        <input type="hidden" name="user_id" value="<?php echo $user_ID ?>" />
                         <p>
                             <label>Stara šifra:</label>
-                            <input id="" type="password" size="20" value="" name="">
+                            <input type="password" size="20" value="" name="old_passw">
                         </p>
                         <p>
                             <label>Nova šifra:</label>
-                            <input id="" type="password" size="20" value="" name="">
+                            <input type="password" size="20" value="" name="new_passw">
                         </p>
                         <p>
                             <label>Ponovljena nova šifra:</label>
-                            <input id="" type="password" size="20" value="" name="">
+                            <input type="password" size="20" value="" name="new_r_passw">
                         </p>
-                        <p><input type="submit" class="button button-blue button-disabled" id="" value="Sačuvaj lozinku" name=""></p>
+                        <p><input type="submit" class="button button-blue" value="Sačuvaj lozinku" name=""></p>
                     </form>
 
+                    <script>
+                    $(document).ready(function() {
+                        var $form = $('#passwForm');
+                        $form.submit(function(e) {
+                            $('.errorMsg').remove();
+                            $('.successMsg').remove();
+
+                            //check if passw match
+                            var oldP = $(this).find('input[name="old_passw"]').val();
+                            var newP = $(this).find('input[name="new_passw"]').val();
+                            var newRP = $(this).find('input[name="new_r_passw"]').val();
+
+                            console.log(newP);
+                            console.log(newRP);
+
+                            //check lenght of passw
+                            if (oldP.length < 5 || newP.length < 5 || newRP.length < 5) {
+                                $form.prepend(
+                                    '<p class="errorMsg">Šifra mora imati više od 6 karaktera</p>'
+                                );
+                                e.preventDefault();
+                                setTimeout(() => {
+                                    $('.errorMsg').remove();
+                                }, 3000);
+                                return false;
+                            } else {
+                                //check if new passwords are the same
+                                if (newP !== newRP) {
+                                    $form.prepend(
+                                        '<p class="errorMsg">Ponovljena šifra se ne poklapa sa novom šifrom</p>'
+                                    );
+                                    e.preventDefault();
+                                    setTimeout(() => {
+                                        $('.errorMsg').remove();
+                                    }, 3000);
+                                    return false;
+                                } else {
+                                    $.post($(this).attr('action'), $(this).serialize(), function(
+                                        response) {
+                                        console.log(response);
+                                        if (response == 'ERROLD') {
+                                            //wrong old password
+                                            $form.prepend(
+                                                '<p class="errorMsg">Pogrešno uneta stara šifra</p>'
+                                            );
+                                            e.preventDefault();
+                                            setTimeout(() => {
+                                                $('.errorMsg').remove();
+                                            }, 3000);
+                                            return false;
+                                        } else if (response == 'SUCCESS') {
+                                            //success
+                                            $form[0].reset();
+                                            $form.prepend(
+                                                '<p class="successMsg">Uspešno sačuvana lozinka</p>'
+                                            );
+                                            e.preventDefault();
+                                            setTimeout(() => {
+                                                $('.errorMsg').remove();
+                                            }, 3000);
+                                            return false;
+                                        } else {
+                                            //not success
+                                            $form.prepend(
+                                                '<p class="errorMsg">Nije moguće promeniti šifru. Kontaktiraj nas</p>'
+                                            );
+                                            e.preventDefault();
+                                            return false;
+                                        }
+                                    });
+                                    return false;
+                                }
+                            }
+                        });
+                    });
+                    </script>
                 </div>
 
             </div> <!-- col-md-8-->
@@ -177,6 +202,7 @@ Template Name: Moj Profil
                 </aside>
 
             </div><!-- col-md-4-->
+
         </div>
 
 

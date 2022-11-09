@@ -1,7 +1,7 @@
 <?php
 
-die('return');
-return;
+//die('return');
+//return;
 include_once '../../../wp-load.php';
 global $wpdb;
 
@@ -352,6 +352,73 @@ function populateLocationsTable() {
 //populateLocationsTable();
 
 
+function assignPostAuthor() {
+	global $wpdb;
+
+	$i = 0;
+	$r = $wpdb->get_results( "SELECT * FROM `jos_mt_links` WHERE `user_id` != 62" );
+	$u = $wpdb->get_results( "SELECT * FROM `jos_users`" );
+
+
+	foreach ($r as $key => $value) {
+		$oglasID = $value->link_id;
+
+		$oldUserId = $value->user_id;
+
+		//get email 
+		foreach($u as $key => $value) {
+			if($value->id == $oldUserId) {
+				$email = $value->email;
+				break;
+			}
+		}
+
+		//get ID of user by email
+		$uu = $wpdb->get_results( "SELECT ID FROM `wp_users` WHERE user_email = '" . $email . "'");
+
+		$userIdToUpdate = (int)$uu[0]->ID;
+
+		//get ID of the post by old_id
+		$f = $wpdb->get_results( "SELECT p.ID FROM `wp_posts` p
+			INNER JOIN `wp_postmeta` pm
+			on p.ID = pm.post_id
+			WHERE pm.meta_key = 'old_id' AND pm.meta_value = $oglasID" );
+
+		if(sizeof($f) !== 0) {
+			$wpdb->get_results( "UPDATE `wp_posts` set post_author = $userIdToUpdate WHERE ID = " . $f[0]->ID );
+
+			var_dump($userIdToUpdate);
+			echo 'userid to update = ' . $userIdToUpdate;
+
+			$i++;
+			echo 'postid = ' . $f[0]->ID;
+			echo '<br>';
+		}
+
+
+		
+		//if($i == 3) break;
+	}
+	
+	echo 'INSERTED: ' . $i;
+	echo '<br>';
+	
+	//foreach wp_posts = oglasi INNER JOIN wp_postmeta get old oglasID
+
+		//$oglasID
+
+		//$oldUserId = SELECT user_id from `jos_mt_links` WHERE link_id = $oglasID
+
+		//UPDATE wp_'
+
+
+
+	//foreach old users
+		//$oldId;
+		//foreach 'SELECT * FROM `jos_mt_links` WHERE user_id = 62 ';
+
+
+}
 
 
 

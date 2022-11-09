@@ -7,8 +7,7 @@ include_once '../../../../wp-load.php';
 global $wpdb;
 
 
-//$dzava = $_POST['drzava'];
-$dzava = 'Srbija';
+$dzava = $_GET['drzava'];
 
 /*
 $r = $wpdb->get_results( "SELECT 
