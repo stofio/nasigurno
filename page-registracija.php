@@ -1,16 +1,22 @@
 <?php
 /*
-Template Name: Login
+Template Name: Registracija
 */
 ?>
 <?php get_header(); ?>
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<script type="text/javascript">
+
+</script>
 
 <div class="container">
 
     <section>
 
         <div class="section-title">
-            <h1>Kreiraj novi nalog na nasigurno.com</h1>
+            <h1>Napravi novi nalog na nasigurno.com</h1>
         </div>
 
         <?php
@@ -27,48 +33,49 @@ Template Name: Login
             ?>
 
         <div class="login-container margin-center">
-            <h3>Prijava</h3>
+            <h3>Registracija</h3>
 
+            <form id="regForm" class="theme-form" action="#" method="post">
+                <div class="team-input">
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="Email" required>
+                </div>
 
+                <div class="team-input">
+                    <label>Korisničko ime</label>
+                    <input type="text" name="username" placeholder="Korisničko ime" required>
+                </div>
 
-            <div class="wp_login_error">
-                <?php if( isset( $_GET['login'] ) && $_GET['login'] == 'failed' ) { ?>
-                <p>Pogrešni podaci. Pokušaj ponovo</p>
-                <?php } 
-	             else if( isset( $_GET['login'] ) && $_GET['login'] == 'empty' ) { ?>
-                <p>Usenesite oba polja.</p>
-                <?php } ?>
-            </div>
+                <div class="team-input">
+                    <label>Šifra</label>
+                    <input type="password" name="newpassword" placeholder="Šifra" required>
+                </div>
 
-            <form class="theme-form" name="loginform" id="loginform" action="<?php echo site_url( '/wp-login.php' ); ?>"
-                method="post">
-                <p><label>Korisničko ime ili email:</label> <br><input id="user_login" type="text" size="20" value=""
-                        name="log">
-                </p>
-                <p><label>Šifra:</label> <br><input id="user_pass" type="password" size="20" value="" name="pwd"></p>
-                <p class="flex"><input id="rememberme" type="checkbox" value="forever" name="rememberme"><label
-                        class="ric" for="rememberme">Zapamti
-                        me</label></p>
+                <div class="team-input">
+                    <label>Ponovljena šifra</label>
+                    <input type="password" name="repeatedpassword" placeholder="Ponovljena šifra" required>
+                </div>
 
-                <p><input type="submit" class="button button-blue" id="wp-submit" value="Prijavi se" name="wp-submit">
-                </p>
+                <div class="g-recaptcha" data-sitekey="6LfhJvwiAAAAAJsAxHf4xEPTwlVbvzIqhHOrhWK1"></div>
+                <input type="submit" value="Registruj se" class="button button-blue">
 
-                <input type="hidden" value="<?php echo esc_attr( $redirect_to ); ?>" name="redirect_to">
-                <!-- <input type="hidden" value="1" name="testcookie"> -->
             </form>
 
         </div>
 
         <?php 
-
-}
-
-?>
+        } //show form
+        ?>
 
     </section>
 
 </div>
 
+<script>
+var filesPath = '<?php echo get_stylesheet_directory_uri(); ?>';
+</script>
+
+<script src="<?php echo get_stylesheet_directory_uri() . '/js/register.js' ?>"></script>
 
 
 <?php get_footer(); ?>

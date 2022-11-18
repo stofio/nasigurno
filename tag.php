@@ -1,15 +1,10 @@
-<?php
-/*
-Template Name: Blog
-*/
-?>
 <?php get_header(); ?>
 
 <!--section -->
 <section class="gray-section top-padding no-overflow">
     <div class="container">
         <div class="section-title">
-            <h1><span>Blog</span></h1>
+            <h1>Tag: <span><?php echo single_cat_title(); ?></span></h1>
         </div>
         <div class="row row-flex fl">
             <div class="col-md-8">
@@ -19,6 +14,13 @@ Template Name: Blog
                     <?php
                     $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
                     $query = new WP_Query( array(
+                        'tax_query'      => array(
+                            array(
+                                'taxonomy'  => 'post_tag',
+                                'field'     => 'slug',
+                                'terms'     => get_queried_object()->slug
+                            )
+                        ),
                         'posts_per_page' => 5,
                         'paged' => $paged
                     ) );

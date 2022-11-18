@@ -11,6 +11,7 @@ Template Name: Login
 
         <div class="section-title">
             <h1>Pristupite vašem nasigurno.com nalogu</h1>
+            <h3 class="go-register">Ili <a href="/registracija">registruj se</a> ako nemaš nalog</h3>
         </div>
 
         <?php
@@ -42,10 +43,9 @@ Template Name: Login
 
             <form class="theme-form" name="loginform" id="loginform" action="<?php echo site_url( '/wp-login.php' ); ?>"
                 method="post">
-                <p><label>Korisničko ime ili email:</label> <br><input id="user_login" type="text" size="20" value=""
-                        name="log">
+                <p><label>Korisničko ime ili email:</label> <br><input id="user_login" type="text" value="" name="log">
                 </p>
-                <p><label>Šifra:</label> <br><input id="user_pass" type="password" size="20" value="" name="pwd"></p>
+                <p><label>Šifra:</label> <br><input id="user_pass" type="password" value="" name="pwd"></p>
                 <p class="flex"><input id="rememberme" type="checkbox" value="forever" name="rememberme"><label
                         class="ric" for="rememberme">Zapamti
                         me</label></p>
@@ -56,6 +56,7 @@ Template Name: Login
                 <input type="hidden" value="<?php echo esc_attr( $redirect_to ); ?>" name="redirect_to">
                 <!-- <input type="hidden" value="1" name="testcookie"> -->
             </form>
+
 
         </div>
 

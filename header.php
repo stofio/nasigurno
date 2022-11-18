@@ -62,23 +62,24 @@
             <div class="nav-button-wrap">
                 <img src="<?php echo get_template_directory_uri() ?>/icons/menu.svg" />
             </div>
+            <div id="logInOut">
+                <?php include(get_template_directory() . '/parts/header-login.php') ?>
+            </div>
             <div class="nav-holder main-menu">
                 <nav>
                     <ul>
-                        <div id="logInOut" class="log-in-out">Login
-                        </div>
                         <li>
                             <a class="main-menu-map-button" href="http://localhost/nasigurno/store-locator/">Mapa</a>
                         </li>
                         <li>
                             <a name="gradovi meni" href="javascript:void(0);">Lokacije</a>
                             <ul>
-                                <li><a href="#">Srbija</a></li>
-                                <li><a href="#">Crna Gora</a></li>
-                                <li><a href="#">Bosna i Herzegovina</a></li>
-                                <li><a href="#">Hrvatska</a></li>
-                                <li><a href="#">Slovenija</a></li>
-                                <li><a href="#">Makedonija</a></li>
+                                <li><a href="/drzave/rs">Srbija</a></li>
+                                <li><a href="/drzave/cg">Crna Gora</a></li>
+                                <li><a href="/drzave/bih">Bosna i Herzegovina</a></li>
+                                <li><a href="/drzave/hr">Hrvatska</a></li>
+                                <li><a href="/drzave/sl/">Slovenija</a></li>
+                                <li><a href="/drzave/makedonia/">Makedonija</a></li>
                             </ul>
                         </li>
                         <li>
@@ -94,7 +95,7 @@
                         </li>
 
                         <li>
-                            <a href="#">Blog</a>
+                            <a href="/blog">Blog</a>
                         </li>
                     </ul>
                 </nav>

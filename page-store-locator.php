@@ -74,6 +74,4 @@ Template Name: Store Locator
 <script>
 THEME_DIR = "<?php echo get_stylesheet_directory_uri() ?>";
 </script>
-<script src="https://code.jquery.com/jquery-3.6.1.min.js"
-    integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 <script src="<?php echo get_stylesheet_directory_uri() . '/store-locator/store-locator.js' ?>"></script>

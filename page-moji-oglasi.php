@@ -9,10 +9,10 @@ Template Name: Moji oglasi
     <section>
 
         <div class="section-title">
-            <h1>Podešavanja</h1>
+            <h1>Moji oglasi</h1>
         </div>
 
-        <div class="row-flex fl">
+        <div class="row-flex fl w-100">
             <div class="col-md-8">
 
                 <div class="box" id="mojiOglasi">
@@ -24,35 +24,64 @@ Template Name: Moji oglasi
                             <?php
                             //get oglasi by current user ID
                             $user_ID = get_current_user_id(); 
-                            echo $user_ID;
-                            
+
+                            $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+                            $args = array( 
+                                'post_type' => 'oglasi',
+                                'author'    =>  $user_ID, 
+                                'post_status' => 'publish',
+                                'post_per_page' => '4',
+                                'order'         =>  'ASC',
+                                'paged' => $paged,
+                            );
+
+                            $the_query = new WP_Query( $args );
+
                             ?>
 
+
+                            <?php if( $the_query->have_posts() ): ?>
+
+
+                            <?php while( $the_query->have_posts() ) : $the_query->the_post(); ?>
+
                             <li class="my-oglas-list">
-                                <a href="#" class="my-oglasi-img">
+                                <a href="<?php the_permalink(); ?>" class="my-oglasi-img">
+                                    <?php
+                                    //get featured image
+                                    $featuredUrlImg = get_the_post_thumbnail_url();
+                                    if($featuredUrlImg) :
+                                    ?>
+                                    <img src="<?php echo $featuredUrlImg ?>" />
+                                    <?php else: ?>
                                     <img
-                                        src="https://blooloop.com/wp-content/uploads/2018/02/IMG-worlds-of-adventure.jpg">
+                                        src="<?php echo get_stylesheet_directory_uri() . '/icons/default-oglas-img.jpg' ?>" />
+                                    <?php endif; ?>
                                 </a>
                                 <div class="my-oglasi-descr">
-                                    <a href="#" title="">
-                                        <h3>„Bubijada“ u Šapcu | Turistički kalendar Srbije</h3>
+                                    <a href="<?php the_permalink(); ?>" title="">
+                                        <h3><?php the_title(); ?></h3>
                                     </a>
                                     <div class="stars">stars</div>
+
                                     <ul class="info">
+
                                         <li>
                                             <div class="wrap">
                                                 <img src="<?php echo get_stylesheet_directory_uri() . '/store-locator/icons/pin.svg' ?>"
                                                     width="14">
                                             </div>
-                                            <p>Mije Kovačevića 10, 11120 Beograd (Palilula)</p>
+                                            <p><?php the_field('adresa'); 
+                                                if(get_field('ogrug') != '') echo ', ' . get_field('ogrug'); 
+                                                if(get_field('grad') != '') echo ' (' . get_field('grad') . ')'; 
+                                                if(get_field('postanski_broj') != '') echo ', ' . get_field('postanski_broj'); 
+                                                if(get_field('drzava') != '') echo ', ' . get_field('drzava'); 
+                                            ?></p>
                                         </li>
-                                        <li>
-                                            <div class="wrap"><img
-                                                    src="<?php echo get_stylesheet_directory_uri() . '/store-locator/icons/phone.svg' ?>"
-                                                    width="11"></div>
-                                            <p>011/2442-801</p>
-                                        </li>
+
+
                                     </ul>
+
                                     <span class="my-oglasi-date">
                                         <img src="<?php echo get_template_directory_uri() ?>/icons/tags.svg" />
                                         Kategorija:
@@ -68,54 +97,25 @@ Template Name: Moji oglasi
 
                             </li>
 
+                            <?php endwhile; ?>
+
+                            <?php endif; ?>
+
                         </ul>
                     </div>
-                    <div class="more-btn">
-                        <a href="#">Vidi sve moje oglase &#10148;</a>
+                    <?php wp_reset_query(); ?>
+
+                    <div class="box cat-pag">
+                        <nav>
+                            <ul>
+                                <li><?php previous_posts_link( '&laquo; Nazad', $the_query->max_num_pages) ?></li>
+                                <li><?php next_posts_link( 'Napred &raquo;', $the_query->max_num_pages) ?></li>
+                            </ul>
+                        </nav>
                     </div>
 
                 </div>
 
-                <div class="box" id="mojProfil">
-                    <h2>Moj profil</h2>
-                    <form class="theme-form">
-                        <p>
-                            <label>Puno ime:</label>
-                            <input id="" type="text" size="20" value="" name="">
-                        </p>
-                        <p>
-                            <label>Korisničko ime:</label>
-                            <input id="" type="text" size="20" value="" name="">
-                        </p>
-                        <p>
-                            <label>Email:</label>
-                            <input id="" type="email" size="20" value="" name="">
-                        </p>
-                        <p><input type="submit" class="button button-blue" id="" value="Sačuvaj podatke" name=""></p>
-                    </form>
-
-                </div>
-
-                <div class="box" id="promeniLozinku">
-                    <h2>Promeni lozinku</h2>
-                    <form class="theme-form change-password">
-                        <p>
-                            <label>Stara šifra:</label>
-                            <input id="" type="password" size="20" value="" name="">
-                        </p>
-                        <p>
-                            <label>Nova šifra:</label>
-                            <input id="" type="password" size="20" value="" name="">
-                        </p>
-                        <p>
-                            <label>Ponovljena nova šifra:</label>
-                            <input id="" type="password" size="20" value="" name="">
-                        </p>
-                        <p><input type="submit" class="button button-blue button-disabled" id="" value="Sačuvaj lozinku"
-                                name=""></p>
-                    </form>
-
-                </div>
 
             </div> <!-- col-md-8-->
 
@@ -143,6 +143,7 @@ Template Name: Moji oglasi
                 </aside>
 
             </div><!-- col-md-4-->
+
         </div>
 
 

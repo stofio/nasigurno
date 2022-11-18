@@ -37,22 +37,19 @@ Template Name: Moj Profil
                         <input type="hidden" name="user_id" value="<?php echo $user_ID ?>" />
                         <p>
                             <label>Ime:</label>
-                            <input type="text" size="20" value="<?php echo $current_user->user_firstname ?>"
-                                name="name">
+                            <input type="text" value="<?php echo $current_user->user_firstname ?>" name="name">
                         </p>
                         <p>
                             <label>Prezime:</label>
-                            <input type="text" size="20" value="<?php echo $current_user->user_lastname ?>"
-                                name="surname">
+                            <input type="text" value="<?php echo $current_user->user_lastname ?>" name="surname">
                         </p>
                         <p>
                             <label>Korisničko ime (login):</label>
-                            <input type="text" size="20" value="<?php echo $current_user->user_login ?>"
-                                name="username">
+                            <input type="text" value="<?php echo $current_user->user_login ?>" name="username">
                         </p>
                         <p>
                             <label>Email:</label>
-                            <input type="email" size="20" value="<?php echo $current_user->user_email ?>" name="email"
+                            <input type="email" value="<?php echo $current_user->user_email ?>" name="email"
                                 class="input-disabled" disabled>
                         </p>
                         <p><input type="submit" class="button button-blue" id="" value="Sačuvaj podatke" name=""></p>
@@ -85,15 +82,15 @@ Template Name: Moj Profil
                         <input type="hidden" name="user_id" value="<?php echo $user_ID ?>" />
                         <p>
                             <label>Stara šifra:</label>
-                            <input type="password" size="20" value="" name="old_passw">
+                            <input type="password" value="" name="old_passw">
                         </p>
                         <p>
                             <label>Nova šifra:</label>
-                            <input type="password" size="20" value="" name="new_passw">
+                            <input type="password" value="" name="new_passw">
                         </p>
                         <p>
                             <label>Ponovljena nova šifra:</label>
-                            <input type="password" size="20" value="" name="new_r_passw">
+                            <input type="password" value="" name="new_r_passw">
                         </p>
                         <p><input type="submit" class="button button-blue" value="Sačuvaj lozinku" name=""></p>
                     </form>

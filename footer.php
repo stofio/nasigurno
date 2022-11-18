@@ -14,7 +14,8 @@
 
 ?>
 
-    </div> <!--wrapper-->
+</div>
+<!--wrapper-->
 </main>
 <footer>
     <section>
@@ -22,13 +23,25 @@
             <img class="foot-logo" width="80"
                 src="<?php echo esc_url( wp_get_attachment_image_src( get_theme_mod( 'custom_logo' ), 'full' )[0] ); ?>" />
 
-            <ul class="links flex-wrap">
-                <li><a href="#">Mapa</a></li>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">Pomoć</a></li>
-                <li><a href="#">M&V Grupacija</a></li>
-                <li><a href="#">Kontakt</a></li>
-            </ul>
+            <div class="links">
+                <ul class=" flex-wrap">
+                    <li><a href="#">Mapa</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Pomoć</a></li>
+                    <li><a href="#">M&V Grupacija</a></li>
+                    <li><a href="#">Kontakt</a></li>
+                </ul>
+
+                <ul class=" flex-wrap">
+                    <li><a href="/login"><b>Login</b></a></li>
+                    <li><a href="/registracija"><b>Registracija</b></a></li>
+                </ul>
+
+            </div>
+
+
+
+
         </div>
     </section>
 </footer>
