@@ -27,6 +27,7 @@
         integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+
     <?php wp_head(); ?>
 
 </head>
@@ -44,17 +45,18 @@
                         src="<?php echo esc_url( wp_get_attachment_image_src( get_theme_mod( 'custom_logo' ), 'full' )[0] ); ?>" />
                 </a>
             </div>
+            <?php if( ! is_home() && ! is_front_page() ) : ?>
             <div class="header-search vis-header-search">
                 <div class="header-search-input-item">
                     <button class="header-search-button left-side">
                         <img src="<?php echo get_template_directory_uri() ?>/icons/search.svg" />
                     </button>
-                    <form id="search" action><input type="search" placeholder="Pretraži" value="" /></form>
+                    <input id="searchInput" type="search" placeholder="Pretraži" value="" />
                     <button class="header-search-button right-side hidden"><i class="fa fa-times"></i></button>
-                    <ul class="autocomplete-list"></ul>
+                    <ul id="searchres" class="autocomplete-list"></ul>
                 </div>
-
             </div>
+            <?php endif; ?>
             <div class="show-search-button">
                 <img src="<?php echo get_template_directory_uri() ?>/icons/search.svg" />
             </div>

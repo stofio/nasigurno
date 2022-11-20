@@ -33,8 +33,12 @@
                 </ul>
 
                 <ul class=" flex-wrap">
+                    <?php if(!is_user_logged_in()): ?>
                     <li><a href="/login"><b>Login</b></a></li>
                     <li><a href="/registracija"><b>Registracija</b></a></li>
+                    <?php else: ?>
+                    <li><a href="/moj-profil"><b>Moj profil</b></a></li>
+                    <?php endif; ?>
                 </ul>
 
             </div>
@@ -46,6 +50,11 @@
     </section>
 </footer>
 
+<script>
+var filesPath = '<?php echo get_stylesheet_directory_uri(); ?>';
+</script>
+
+<script src="<?php echo get_stylesheet_directory_uri() . '/js/searchbox.js' ?>"></script>
 
 <?php wp_footer(); ?>
 

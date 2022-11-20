@@ -570,7 +570,11 @@ input[type=search]::-webkit-search-results-decoration {
   background-color: #fff;
   z-index: 1000;
   overflow: hidden auto;
-  height: 400px;
+  max-height: 400px;
+}
+
+#searchres {
+  display: none;
 }
 
 .autocomplete-list a:hover {
@@ -2894,6 +2898,10 @@ ul.options-menu {
   background-color: #f2f2f2;
 }
 
+.sidebar .listing-img.def {
+  border: solid 1px #ccc;
+}
+
 
 .sidebar-opcije {
   list-style: inside;
@@ -3313,4 +3321,14 @@ h3.go-register {
 
 h3.go-register a {
   color: #9b142b;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading img {
+  width: 100px;
 }

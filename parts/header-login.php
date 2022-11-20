@@ -13,7 +13,7 @@ if(is_user_logged_in()) {
 
 <div class="head-logged">
     <a href="/moj-profil/">
-        Moj profil
+        👤 Moj profil
     </a>
 </div>
 

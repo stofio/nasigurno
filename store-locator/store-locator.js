@@ -216,14 +216,27 @@ map.on('load', () => {
   }
 
   function displayListingOnSidebar(id) {
-    
-    $('#listings').append(`<h3>Link_id = ${id}</h3>`);
+    console.log(id)
+    $loading = $('.loading');
+    $listing = $('.listing');
+    $listingContainer = $('.listings');
+
+    $listing.remove();
+    $loading.css('display', 'flex');
     $.ajax({
       method: "POST",
       url: filesPath + '/store-locator/parts/getProfileWithId.php?id=' + id,
       success: function(data) {
-        profile = JSON.parse(data);
-        console.log(profile);
+        $loading.css('display', 'none');
+        console.log(data);
+        /**
+         * output data on left
+         */
+        //fill the dom
+
+
+        //show
+        $listingContainer.append(data);
       }
     });
 

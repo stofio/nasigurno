@@ -20,8 +20,8 @@ Template Name: Home
                 <div class="search-input pos-rel">
                     <div class="header-search-input-item">
                         <button class="header-search-button left-side"><i class="fa fa-search"></i></button>
-                        <input id="searchInput" name="search" type="search" placeholder="Pretraži na nasigurno"
-                            value="" />
+                        <input id="searchInput" name="search" type="search" placeholder="Pretraži na nasigurno" value=""
+                            autocomplete="off" />
                         <button class="header-search-button right-side hidden"><i class="fa fa-times"></i></button>
                     </div>
                     <ul id="searchres" class="autocomplete-list"></ul>
@@ -268,11 +268,7 @@ Template Name: Home
 
 </div>
 
-<script>
-var filesPath = '<?php echo get_stylesheet_directory_uri(); ?>';
-</script>
 
-<script src="<?php echo get_stylesheet_directory_uri() . '/js/searchbox.js' ?>"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/glider-js/1.7.8/glider.min.js"></script>
 
 <script>

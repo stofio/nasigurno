@@ -4,8 +4,8 @@ $(document).ready(() => {
 
     console.log(path)
 
-    $('#searchInput').keyup(() => {
-
+    $('#searchInput').on('keyup focus', () => {
+        $('#searchres').css('display', 'none');
         var input = $('#searchInput').val();
 
         if(input != '') {
@@ -14,10 +14,20 @@ $(document).ready(() => {
                 method: 'POST',
                 data: {input:input},
                 success: function(result) {
+                    $('#searchres').css('display', 'block');
                     $('#searchres').html(result);
                 }
             });
         }
 
     });
+
+    
+    $(document).on('click', (e) => {
+        if( $(e.target).attr('id') !== 'searchres' ) {
+            $('#searchres').css('display', 'none');
+        }
+    })
+
+
 });

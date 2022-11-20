@@ -4,7 +4,7 @@ include_once '../../../../../wp-load.php';
 global $wpdb;
 
 
-$rr = $wpdb->get_results( "SELECT link_id, link_name, address, postcode, lat, lng FROM `jos_mt_links` GROUP BY lat, lng" );
+//$rr = $wpdb->get_results( "SELECT link_id, link_name, address, postcode, lat, lng FROM `jos_mt_links` GROUP BY lat, lng" );
 
 
 $r = $wpdb->get_results( "SELECT `id`,
@@ -61,7 +61,7 @@ foreach ($r as $key => $value) {
             )
         ),
         "properties" => array(
-        	"link_id" => $value->id,
+        	"link_id" => $value->post_id,
         	"link_name" => $value->post_name,
         	"address" => $value->address,
         	"drzava" => $value->drzava,

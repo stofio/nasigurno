@@ -29,37 +29,9 @@ Template Name: Store Locator
         </div>
     </div>
     <div id='listings' class='listings'>
-        <div class="listing">
-            <img class="listing-img"
-                src="https://media-cdn.tripadvisor.com/media/photo-s/14/71/28/c0/20180902-132907-largejpg.jpg" />
-            <h4>Listing name</h4>
-            <ul class="info">
-                <li>stars</li>
-                <li>
-                    <div class="wrap">
-                        <img src="<?php echo get_stylesheet_directory_uri() . '/store-locator/icons/pin.svg' ?>"
-                            width="18">
-                    </div>
+        <div class="loading" style="display:none"><img
+                src="<?php echo get_stylesheet_directory_uri() . '/icons/loading.gif' ?>" /></div>
 
-                    <a onclick="#" href="#">Mije Kovačevića 10, 11120 Beograd (Palilula)</a>
-                </li>
-                <li>
-                    <div class="wrap"><img
-                            src="<?php echo get_stylesheet_directory_uri() . '/store-locator/icons/phone.svg' ?>"
-                            width="15"></div>
-                    <a onclick="#" href="tel:011/2442-801">011/2442-801</a>
-                </li>
-                <li>
-                    <div class="wrap"><img
-                            src="<?php echo get_stylesheet_directory_uri() . '/store-locator/icons/web.svg' ?>"
-                            width="19"></div>
-                    <a href="#">website.com</a>
-                </li>
-            </ul>
-            <a href="#" class="button flex-align-center">
-                Dodatne informacije
-            </a>
-        </div>
     </div>
 
 </div> <!-- sidebar -->
