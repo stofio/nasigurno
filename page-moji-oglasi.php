@@ -16,7 +16,7 @@ Template Name: Moji oglasi
             <div class="col-md-8">
 
                 <div class="box" id="mojiOglasi">
-                    <p><input type="submit" class="button button-blue" id="" value="+ Dodaj oglas" name=""></p>
+                    <a href="/dodaj-oglas" class="button button-blue dodaj-oglas">+ Dodaj oglas</a>
                     <h2>Moji oglasi</h2>
                     <div class="oglasi-list">
                         <ul class="my-oglasi">

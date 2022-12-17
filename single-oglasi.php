@@ -30,6 +30,8 @@ wp_reset_query();
 <script src='https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js'></script>
 <link href='https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css' rel='stylesheet' />
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <!--section -->
 <section class="gray-section top-padding no-overflow">
     <div class="container">
@@ -81,10 +83,7 @@ wp_reset_query();
                                             href="tel:<?php echo get_sub_field('tel') ?>"><?php echo get_sub_field('tel') ?></a>
                                         <?php if(get_sub_field('kont_osob')) echo '('. get_sub_field('kont_osob'). ')' ?>
                                     </div>
-                                    <?php
-                                        // End loop.
-                                        endwhile;
-                                        ?>
+                                    <?php endwhile; ?>
                                 </div>
 
                             </li>
@@ -96,6 +95,21 @@ wp_reset_query();
                                         width="15"></div>
                                 <a href="<?php the_field('website') ?>"
                                     target="_blank"><?php the_field('website') ?></a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if(get_field('radno_vreme')  != '') : ?>
+                            <li>
+                                <div class="wrap"><img
+                                        src="http://localhost/nasigurno/wp-content/themes/nasigurno/store-locator/icons/clock.svg"
+                                        width="15"></div>
+                                <ul class="radno-vreme">
+                                    <?php while( have_rows('radno_vreme') ) : the_row(); ?>
+                                    <li><b><?php echo get_sub_field('dan') ?></b>:
+                                        <span> <?php echo get_sub_field('vreme') ?></span>
+                                    </li>
+                                    <?php endwhile; ?>
+                                </ul>
                             </li>
                             <?php endif; ?>
                         </ul>
@@ -140,17 +154,19 @@ wp_reset_query();
                             <?php the_field('opis') ?>
                         </div>
 
+                        <?php
+                        $tags = get_the_tags();
+                        if($tags):
+                        ?>
                         <div class="h2">Tagovi</div>
                         <div class="flex-wrap tagovi">
                             <?php
-                                $tags = get_the_tags();
-                                if($tags){
-                                    foreach($tags as $key => $tag) {
-                                        echo '<a class="cat-link" href="'.get_tag_link($tag->term_id).'">'.$tag->name.'</a>';
-                                    }
-                                }    
+                                foreach($tags as $key => $tag) {
+                                    echo '<a class="cat-link" href="'.get_tag_link($tag->term_id).'">'.$tag->name.'</a>';
+                                }
                             ?>
                         </div>
+                        <?php endif; ?>
                     </div>
                     <?php endif; ?>
 
@@ -171,28 +187,167 @@ wp_reset_query();
                     </div>
                     <?php endif; ?>
 
+
+
+
+
+
                     <div class="box" id="recenzija">
                         <div class="h2 flex-align-center">
                             Napiši recenziju
                         </div>
                         <div id="napisi-recenziju" class="anchor"></div>
-                        <div class="flex-align-center">
-                            <p>Ocena:</p>
-                        </div>
-                        <textarea name="add_review_text" cols="40" rows="6" placeholder="Tekst *"></textarea>
-                        <input type="hidden" name="add_review_id" value="103154">
-                        <div name="review_images" class="gallery flex-wrap"></div>
-                        <div class="flex">
-                            <div class="flex button-add-photo-wrap">
-                                <label>Dodaj sliku:
-                                    <input name="image" type="file" accept="image/*" multiple="">
-                                </label>
+
+                        <form method="post" id="nova-recenzija">
+                            <div class="flex-align-center">
+                                <p>Ocena:</p>
+                                <p class="stars">
+                                    <input id="add_review_rating" name="add_review_rating" type="hidden" value="" />
+                                    <span>
+                                        <a class="star-1" href="javascript:;">1</a>
+                                        <a class="star-2" href="javascript:;">2</a>
+                                        <a class="star-3" href="javascript:;">3</a>
+                                        <a class="star-4" href="javascript:;">4</a>
+                                        <a class="star-5" href="javascript:;">5</a>
+                                    </span>
+                                </p>
                             </div>
-                        </div>
-                        <div class="flex">
-                            <a href="#" class="button button-blue">Pošalji</a>
-                        </div>
+                            <textarea id="add_review_text" name="add_review_text" cols="40" rows="5"
+                                placeholder="Tekst *"></textarea>
+                            <!--<div name="review_images" class="gallery flex-wrap"></div>-->
+                            <div class="flex">
+                                <div class="flex button-add-photo-wrap">
+                                    <label>Dodaj sliku:
+                                        <input id="images" name="images" type="file" accept="image/*" multiple="">
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="flex">
+                                <input type="submit" class="button button-blue" value="Pošalji">
+                            </div>
+                        </form>
                     </div>
+
+                    <script>
+                    $('.stars a').on('click', function() {
+                        $('.stars span, .stars a').removeClass('active');
+
+                        $(this).addClass('active');
+                        $('.stars span').addClass('active');
+                        $('#add_review_rating').val($(this).html());
+                    });
+
+                    $('#nova-recenzija').on('submit', (e) => {
+                        e.preventDefault();
+                        //check if user has already given review to oglas
+                        reviewAlreadyGiven()
+                            .then((given) => {
+                                if (!given) {
+                                    //check if stars and comment are filled
+                                    if (isFormValidated(e)) {
+                                        saveReview(e);
+                                    }
+                                }
+                            })
+
+                        //ajax
+                    });
+
+                    $('#recenzija').on('click', () => {
+                        //remove errors
+                        $('.form-notice').remove();
+                    });
+
+                    function saveReview(e) {
+                        var userId = <?php echo get_current_user_id() ?>;
+                        var oglasId = <?php echo $post->ID ?>;
+
+                        var data = new FormData();
+
+                        //Form data
+                        var form_data = $(e.targe).serializeArray();
+                        $.each(form_data, function(key, input) {
+                            data.append(input.name, input.value);
+                        });
+
+                        //File data
+                        var file_data = $('input[name="images"]')[0].files;
+                        for (var i = 0; i < file_data.length; i++) {
+                            data.append("images[]", file_data[i]);
+                        }
+
+                        //Custom data
+                        data.append('userId', userId);
+                        data.append('oglasId', oglasId);
+
+
+                        $.ajax({
+                            method: "POST",
+                            url: "<?php echo get_stylesheet_directory_uri() ?>/scripts/saveReview.php",
+                            data: data,
+                            processData: false,
+                            contentType: false,
+                            success: function(data) {
+                                console.log(data);
+
+                            }
+                        });
+                    }
+
+                    //return true or false
+                    function reviewAlreadyGiven() {
+                        return new Promise((resolve, reject) => {
+                            $.ajax({
+                                method: "POST",
+                                url: "<?php echo get_stylesheet_directory_uri() ?>/scripts/isReviewGiven.php ",
+                                data: {
+                                    userId: <?php echo get_current_user_id() ?>,
+                                    oglasId: <?php echo $post->ID ?>,
+                                },
+                                success: function(data) {
+                                    //console.log(data);
+                                    if (data == 'false') {
+                                        resolve(false);
+                                    } else if (data == 'true') {
+                                        resolve(true);
+                                    }
+
+                                }
+                            });
+                        });
+                    }
+
+                    function isFormValidated(e) {
+                        let stars = $(e.target).find('#add_review_rating').val();
+                        let review = $(e.target).find('#add_review_text').val();
+
+                        if (review == '') {
+                            showReviewFromError('review');
+                            return false;
+                        } else if (stars == '') {
+                            showReviewFromError('stars');
+                            return false;
+                        } else {
+                            return true;
+                        }
+
+                    }
+
+                    function showReviewFromError(error) {
+                        if (error == 'review') {
+                            var notice = '<div class="form-notice">Zaboravio si da napišeš recenziju</div>';
+                        } else if (error == 'stars') {
+                            var notice = '<div class="form-notice">Zaboravio si da oceniš zvezdicama</div>';
+                        }
+                        $('#nova-recenzija').append(notice);
+
+                    }
+                    </script>
+
+
+
+
+
 
                     <div class="box">
                         <div class="h2">Druge slične lokacije</div>

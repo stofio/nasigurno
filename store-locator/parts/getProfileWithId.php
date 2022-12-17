@@ -72,6 +72,20 @@ if($post_query->have_posts() ) {
             <a href="<?php the_field('website') ?>"><?php the_field('website') ?></a>
         </li>
         <?php endif; ?>
+        <?php if(get_field('radno_vreme')  != '') : ?>
+        <li>
+            <div class="wrap"><img
+                    src="http://localhost/nasigurno/wp-content/themes/nasigurno/store-locator/icons/clock.svg"
+                    width="15"></div>
+            <ul class="radno-vreme">
+                <?php while( have_rows('radno_vreme') ) : the_row(); ?>
+                <li><b><?php echo get_sub_field('dan') ?></b>:
+                    <span> <?php echo get_sub_field('vreme') ?></span>
+                </li>
+                <?php endwhile; ?>
+            </ul>
+        </li>
+        <?php endif; ?>
     </ul>
     <a href="<?php the_permalink() ?>" class="button flex-align-center">
         Dodatne informacije
