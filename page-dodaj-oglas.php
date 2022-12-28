@@ -6,13 +6,18 @@ Template Name: Dodaj oglas
 <?php acf_form_head(); ?>
 <?php get_header(); ?>
 
+<script
+    src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places&amp;language=hr&key=AIzaSyAQKBTixull1qUQZ9uJJ4fcmpdqI2hE8Aw">
+</script>
+
+
+
 <div class="container">
     <section id="novi-oglas">
 
         <div class="section-title">
             <h1>Objavi novi oglasi</h1>
         </div>
-
 
         <div class="box" id="dodajOglas">
             <form id="newOglasForm" action="<?php echo get_template_directory_uri() ?>/scripts/save-user-data.php">
@@ -22,6 +27,14 @@ Template Name: Dodaj oglas
                         <p>
                             <label>Naslov:</label>
                             <input type="text" value="" name="naslov">
+                        </p>
+                        <p class="nasl_sl">
+                            <label>Naslovna slika:</label>
+                            <button type="button" style=""
+                                onclick="document.getElementById('naslovna_slika').click()">Izaberi sliku</button>
+                            <input type="file" accept="image/png, image/gif, image/jpeg" name="naslovna_slika"
+                                id="naslovna_slika" style="display:none">
+                            <img src="" id="preview_naslovna_slika" />
                         </p>
                         <p>
                             <label>Opis:</label>
@@ -33,10 +46,10 @@ Template Name: Dodaj oglas
                                 <option disabled selected>- Izaberite kategoriju -</option>
                                 <?php
                                 $argspar = array(
-                                'orderby'=>'name',
-                                'order' => 'ASC',
-                                'hide_empty'=>false,
-                                'parent'=>0
+                                    'orderby'=>'name',
+                                    'order' => 'ASC',
+                                    'hide_empty'=>false,
+                                    'parent'=>0
                                 );
                                 $parcat = get_terms( "oblast", $argspar );
                                 
@@ -55,216 +68,121 @@ Template Name: Dodaj oglas
                             </select>
                         </p>
 
-                        <p>
-                            <label>Telefon:</label>
-
-                        <table class="table table-bordered table-hover" id="dynamic_field">
-                            <tr>
-                                <td><input type="text" name="kontakt_osoba[]" placeholder="Kontakt osoba" class="" />
-                                </td>
-                                <td><input type="text" name="broj_telefona[]" placeholder="Broj telefona" class="" />
-                                </td>
-                                <td><button type="button" id="addTelefon" class="btn btn-primary">Dodaj još</button>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <script>
-                        $(document).ready(function() {
-
-                            var i = 1;
-                            var length;
-
-                            $("#addTelefon").click(function() {
-                                var rowIndex = $('#dynamic_field').find('tr').length;
-                                i++;
-                                $('#dynamic_field').append(`<tr id="row` + i + `">	
-                                <td><input type="text" name="kontakt_osoba[]" placeholder="Kontakt osoba" class="" />
-                                </td>
-                                <td><input type="text" name="broj_telefona[]" placeholder="Broj telefona" class="" />
-                                </td>
-                                <td><button type="button" name="remove" id="` +
-                                    i + `" class="btn btn-danger btn_remove">X</button></td>
-                                </tr>`);
-                            });
-
-                            $(document).on('click', '.btn_remove', function() {
-                                var rowIndex = $('#dynamic_field').find('tr').length;
-                                var button_id = $(this).attr("id");
-                                $('#row' + button_id + '').remove();
-                            });
-
-                        });
-                        </script>
-
-
-
-                        </p>
-
-
-                    </div>
-                    <div class="col-md-6">
-
-                        <style>
-                        .upload__box {
-                            padding: 40px;
-                        }
-
-                        .upload__inputfile {
-                            width: 0.1px;
-                            height: 0.1px;
-                            opacity: 0;
-                            overflow: hidden;
-                            position: absolute;
-                            z-index: -1;
-                        }
-
-                        .upload__btn {
-                            display: inline-block;
-                            font-weight: 600;
-                            color: #fff;
-                            text-align: center;
-                            min-width: 116px;
-                            padding: 5px;
-                            transition: all 0.3s ease;
-                            cursor: pointer;
-                            border: 2px solid;
-                            background-color: #4045ba;
-                            border-color: #4045ba;
-                            border-radius: 10px;
-                            line-height: 26px;
-                            font-size: 14px;
-                        }
-
-                        .upload__btn:hover {
-                            background-color: unset;
-                            color: #4045ba;
-                            transition: all 0.3s ease;
-                        }
-
-                        .upload__btn-box {
-                            margin-bottom: 10px;
-                        }
-
-                        .upload__img-wrap {
-                            display: flex;
-                            flex-wrap: wrap;
-                            margin: 0 -10px;
-                        }
-
-                        .upload__img-box {
-                            width: 200px;
-                            padding: 0 10px;
-                            margin-bottom: 12px;
-                        }
-
-                        .upload__img-close {
-                            width: 24px;
-                            height: 24px;
-                            border-radius: 50%;
-                            background-color: rgba(0, 0, 0, 0.5);
-                            position: absolute;
-                            top: 10px;
-                            right: 10px;
-                            text-align: center;
-                            line-height: 24px;
-                            z-index: 1;
-                            cursor: pointer;
-                        }
-
-                        .upload__img-close:after {
-                            content: "✖";
-                            font-size: 14px;
-                            color: white;
-                        }
-
-                        .img-bg {
-                            background-repeat: no-repeat;
-                            background-position: center;
-                            background-size: cover;
-                            position: relative;
-                            padding-bottom: 100%;
-                        }
-                        </style>
-
                         <div class="upload__box">
                             <div class="upload__btn-box">
                                 <label class="upload__btn">
-                                    <p>Upload images</p>
-                                    <input type="file" multiple="" data-max_length="20" class="upload__inputfile">
+                                    <span>Izaberi slike za galeriju</span>
+                                    <input type="file" accept="image/png, image/gif, image/jpeg" multiple=""
+                                        data-max_length="20" class="upload__inputfile">
                                 </label>
                             </div>
                             <div class="upload__img-wrap"></div>
                         </div>
 
-                        <script>
-                        jQuery(document).ready(function() {
-                            ImgUpload();
-                        });
 
-                        function ImgUpload() {
-                            var imgWrap = "";
-                            var imgArray = [];
+                        <div class="double-input">
+                            <div>
+                                <label>Website:</label>
+                                <input type="text" value="" name="website">
+                            </div>
+                            <div>
+                                <label>Video:</label>
+                                <input type="text" value="" name="video">
+                            </div>
+                        </div>
+                        <p>
+                            <label>Porezni broj:</label>
+                            <input type="text" value="" name="porezni_broj">
+                        </p>
 
-                            $('.upload__inputfile').each(function() {
-                                $(this).on('change', function(e) {
-                                    imgWrap = $(this).closest('.upload__box').find('.upload__img-wrap');
-                                    var maxLength = $(this).attr('data-max_length');
+                    </div>
 
-                                    var files = e.target.files;
-                                    var filesArr = Array.prototype.slice.call(files);
-                                    var iterator = 0;
-                                    filesArr.forEach(function(f, index) {
+                    <div class="col-md-6">
+                        <div class="repetar-cont">
+                            <label>Telefon:</label>
+                            <table class="table table-bordered table-hover" id="telefoni">
+                                <tr>
+                                    <td><input type="text" name="tel_kontakt_osoba[]" placeholder="Kontakt osoba"
+                                            class="" />
+                                    </td>
+                                    <td><input type="text" name="broj_telefona[]" placeholder="Broj telefona"
+                                            class="" />
+                                    </td>
+                                    <td><button type="button" id="addTelefon" class="btn btn-primary">Dodaj
+                                            telefon</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
 
-                                        if (!f.type.match('image.*')) {
-                                            return;
-                                        }
+                        <div class="repetar-cont">
+                            <label>Email:</label>
+                            <table class="table table-bordered table-hover" id="emailovi">
+                                <tr>
+                                    <td><input type="text" name="em_kontakt_osoba[]" placeholder="Kontakt osoba"
+                                            class="" />
+                                    </td>
+                                    <td><input type="text" name="email[]" placeholder="Email adresa" class="" />
+                                    </td>
+                                    <td><button type="button" id="addEmail" class="btn btn-primary">Dodaj
+                                            email</button>
+                                    </td>
+                                </tr>
+                            </table>
 
-                                        if (imgArray.length > maxLength) {
-                                            return false
-                                        } else {
-                                            var len = 0;
-                                            for (var i = 0; i < imgArray.length; i++) {
-                                                if (imgArray[i] !== undefined) {
-                                                    len++;
-                                                }
-                                            }
-                                            if (len > maxLength) {
-                                                return false;
-                                            } else {
-                                                imgArray.push(f);
+                        </div>
 
-                                                var reader = new FileReader();
-                                                reader.onload = function(e) {
-                                                    var html =
-                                                        "<div class='upload__img-box'><div style='background-image: url(" +
-                                                        e.target.result +
-                                                        ")' data-number='" + $(
-                                                            ".upload__img-close").length +
-                                                        "' data-file='" + f.name +
-                                                        "' class='img-bg'><div class='upload__img-close'></div></div></div>";
-                                                    imgWrap.append(html);
-                                                    iterator++;
-                                                }
-                                                reader.readAsDataURL(f);
-                                            }
-                                        }
-                                    });
-                                });
-                            });
 
-                            $('body').on('click', ".upload__img-close", function(e) {
-                                var file = $(this).parent().data("file");
-                                for (var i = 0; i < imgArray.length; i++) {
-                                    if (imgArray[i].name === file) {
-                                        imgArray.splice(i, 1);
-                                        break;
-                                    }
-                                }
-                                $(this).parent().parent().remove();
-                            });
-                        }
-                        </script>
+                        <p class="no-line">
+                            <label>Lokacija:</label>
+                            <input id="pac-input" type="text" placeholder="Unesi grad, ulicu i broj">
+                        <div id="map-canvas"></div>
+                        </p>
+
+
+                        <p class="no-line">
+                        <div><label>Država:</label>
+                            <select name="drzava">
+                                <option disabled selected>- Izaberi državu -</option>
+                                <option value="Srbija">Srbija</option>
+                                <option value="Bosna i Hercegovina">Bosna i Hercegovina
+                                </option>
+                                <option value="Crna Gora">Crna Gora</option>
+                                <option value="Hrvatska">Hrvatska</option>
+                                <option value="Slovenija">Slovenija</option>
+                                <option value="Makedonija">Makedonija</option>
+                            </select>
+                        </div>
+                        </p>
+
+                        <p>
+                            <label>Grad:</label>
+                            <input type="text" value="" name="grad">
+                        </p>
+
+
+                        <div class="double-input">
+                            <div>
+                                <label>Ulica:</label>
+                                <input type="text" value="" name="ulica">
+                            </div>
+                            <div>
+                                <label>Broj:</label>
+                                <input type="text" value="" name="broj">
+                            </div>
+                        </div>
+
+
+                        <div class="double-input">
+                            <div>
+                                <label>Okrug:</label>
+                                <input type="text" value="" name="okrug">
+                            </div>
+                            <div>
+                                <label>Poštanski broj:</label>
+                                <input type="text" value="" name="po_broj">
+                            </div>
+                        </div>
 
                     </div>
 
@@ -272,35 +190,13 @@ Template Name: Dodaj oglas
             </form>
         </div>
 
-
     </section>
 </div>
 
 
-<script>
-$('#parent-cat').on('change', (e) => {
-    $('#child-cat').attr('disabled', true); //disable child select
-    var term_id = $(e.target).val();
-    $.ajax({
-        method: "POST",
-        url: "<?php echo get_stylesheet_directory_uri() ?>/scripts/getChildOblasti.php",
-        data: {
-            term_id: term_id
-        },
-        success: function(data) {
-            var children = JSON.parse(data);
-            $('#child-cat').empty();
-            $.each(children, function(index, item) {
-                $('#child-cat').append(
-                    `<option value="${item['term_id']}">${item['name']}</option>`);
-            });
 
-            $('#child-cat').attr('disabled', false); //enable child select
+<script src="<?php echo get_stylesheet_directory_uri() . '/js/dodaj-oglas.js' ?>"></script>
 
-        }
-    });
-})
-</script>
 
 
 

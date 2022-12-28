@@ -3103,6 +3103,10 @@ ul.options-menu {
   font-weight: bold;
 }
 
+#newOglasForm p.no-line {
+border-bottom: 0;
+}
+
 #newOglasForm input {
   padding: 4px 8px;
   font-size: 14px;
@@ -3372,10 +3376,6 @@ ul.radno-vreme li{
 }
 
 
-span {
-font-size: 0; /* trick to remove inline-element's margin */
-}
-
 .stars a:hover ~ a:after{
   color: #9e9e9e !important;
 }
@@ -3406,4 +3406,166 @@ span.active a:after,
 #novi-oglas select {
   width: 100%;
   height: 35px;
+}
+
+#novi-oglas img {
+  border-radius: 6px;
+}
+
+p.nasl_sl button {
+  width: 100%;
+  border-radius: 6px;
+  display:block;
+  width:120px; 
+  height:30px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+}
+
+p.nasl_sl button:hover {
+  background-color: #fff;
+}
+
+p.nasl_sl img {
+  margin-top: 15px;
+}
+
+#novi-oglas .btn.btn-primary,
+#novi-oglas button.btn[name="remove"] {
+  padding: 7px 8px;
+    border-radius: 6px;
+    color: #222;
+    font-weight: 500;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+
+.upload__inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.upload__btn {
+  display: inline-block;
+  font-weight: 500 !important;
+  color: #fff;
+  text-align: center;
+  min-width: 116px;
+  padding: 5px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  border-radius: 6px;
+  line-height: 26px;
+  font-size: 14px;
+  background-color: #f0f0f0;
+  margin-bottom: 15px;
+
+}
+
+.upload__btn span {
+  font-size: 14px;
+  color: #222222;
+}
+
+.upload__btn:hover {
+  background-color: unset;
+  color: #4045ba;
+  transition: all 0.3s ease;
+}
+
+.upload__btn-box {
+  margin-bottom: 10px;
+}
+
+.upload__img-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -10px;
+}
+
+.upload__img-box {
+  width: 140px;
+  padding: 0 10px;
+  margin-bottom: 12px;
+}
+
+.upload__img-box div {
+  border-radius: 6px;
+}
+
+.upload__img-close {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  text-align: center;
+  line-height: 24px;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.upload__img-close:after {
+  content: "✖";
+  font-size: 14px;
+  color: white;
+}
+
+.img-bg {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  padding-bottom: 100%;
+}
+
+.repetar-cont {
+  border-bottom: #EEEEEE solid 1px;
+    padding: 15px 0;
+}
+
+#newOglasMap {
+  width: 100%;
+  height: 300px;
+}
+
+#geocoder .mapboxgl-ctrl-geocoder {
+  width: 100%;
+  max-width: 100%;
+  box-shadow: none;
+  margin-bottom: 10px;
+}
+
+#geocoder .mapboxgl-ctrl-geocoder--input {
+  padding-left: 32px;
+}
+
+/* google map satelite/map view */
+#novi-oglas .gmnoprint {
+  
+}
+
+#novi-oglas #map-canvas {
+  height:300px;
+  width: 100%;
+}
+
+.double-input {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 0;
+  border-bottom: #EEEEEE solid 1px;
+}
+
+.double-input div {
+  width: 49%;
 }

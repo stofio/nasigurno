@@ -23,7 +23,7 @@ add_action( 'init', 'theme_scripts' );
 
 //google api key
 function my_acf_init() {    
-    acf_update_setting('google_api_key', 'AIzaSyAE-ObLvFjdAKqLdKVzhHf02YAObwRmsjA');
+    acf_update_setting('google_api_key', 'AIzaSyAQKBTixull1qUQZ9uJJ4fcmpdqI2hE8Aw');
 }
 add_action('acf/init', 'my_acf_init');
 
