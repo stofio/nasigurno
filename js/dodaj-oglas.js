@@ -1,23 +1,167 @@
 (function() {
 
-    $('#parent-cat').on('change', (e) => {
-        $('#child-cat').attr('disabled', true); //disable child select
+    THEME_DIR;
+
+
+    $(document).on('click', () => {
+        //remove errors
+        $('#newOglasForm input').removeClass('border-red');
+        $('#newOglasForm select').removeClass('border-red');
+        $('#newOglasForm textarea').removeClass('border-red');
+        $('.formError').remove();
+    })
+
+    $('#newOglasForm').on('submit', (e) => {
+        e.preventDefault();
+        var form = $(e.target);
+        
+        
+        //isFormValid();
+        if(isFormValid(form)) {
+            //send data to database
+            var data = form.serialize();
+        }
+        else {
+            //show error notice
+            $('input#objaviOglas').before('<p class="formError no-line">Unesi sva polja označena crvenom zvezdicom</p>');
+        }
+    });
+
+    function isFormValid(form) {
+
+        var validated = true;
+
+        /*var naslov = form.find('input[name=""]');
+        var naslovna_slika = form.find('input[namenaslov="naslovna_slika"]');
+        var opis = form.find('textarea[name="opis"]');
+        var parent_cat = form.find('select[name="parent_cat"]');
+        var child_cat = form.find('select[name="child_cat"]');
+        var gallery = form.find('input[name="gallery"]');
+        var website = form.find('input[name="website"]');
+        var video = form.find('input[name="video"]');
+        var porezni_broj = form.find('input[name="porezni_broj"]');
+        var pac-input = form.find('input[name="pac-input"]');
+        var lat = form.find('input[name="lat"]');
+        var lng = form.find('input[name="lng"]');
+        var drzava = form.find('select[name="drzava"]');
+        var grad = form.find('input[name="grad"]');
+        var ulica = form.find('input[name="ulica"]');
+        var broj = form.find('input[name="broj"]');
+        var okrug = form.find('input[name="okrug"]');
+        var po_broj = form.find('input[name="po_broj"]');*/
+
+        var inputs = [
+            form.find('input[name="naslov"]'),
+            form.find('input[name="naslovna_slika"]'),
+            form.find('textarea[name="opis"]'),
+            form.find('select[name="parent_cat"]'),
+            form.find('select[name="child_cat"]'),
+            form.find('input[name="gallery"]'),
+            form.find('input[name="website"]'),
+            form.find('input[name="video"]'),
+            form.find('input[name="porezni_broj"]'),
+            form.find('input[name="pac-input"]'),
+            form.find('input[name="lat"]'),
+            form.find('input[name="lng"]'),
+            form.find('select[name="drzava"]'),
+            form.find('input[name="grad"]'),
+            form.find('input[name="ulica"]'),
+            form.find('input[name="broj"]'),
+            form.find('input[name="okrug"]'),
+            form.find('input[name="po_broj"]')
+        ];
+
+        var repeaters = [
+            form.find('#telefoni'),
+            form.find('#emailovi'),
+            form.find('#termini')
+        ];
+
+        
+
+        //validate inputs
+        inputs.forEach((inp) => {
+            console.log(inp.val());
+            let inputVal = inp.val();
+            if(inputVal == "" || inputVal == null || inputVal == undefined) {
+                inp.addClass("border-red");
+                validated = false;
+            }
+        })
+
+
+        //validate repeaters
+        repeaters.forEach((rep) => {
+            //telefon
+            rep.find('input[name="tel_kontakt_osoba[]"]').each((i, tel_k) => {
+                var rowOsoba = tel_k.value;
+                var rowTel = rep.find(`input[name="broj_telefona[]"]`).eq(i).val();
+                if(rowOsoba == "") {
+                    $(tel_k).addClass("border-red");
+                    validated = false;
+                }
+                if(rowTel == "") {
+                    rep.find(`input[name="broj_telefona[]"]`).eq(i).addClass("border-red");
+                    validated = false;
+                }
+            });
+
+
+            //email
+            rep.find('input[name="em_kontakt_osoba[]"]').each((i, tel_k) => {
+                var rowOsoba = tel_k.value;
+                var rowTel = rep.find(`input[name="email[]"]`).eq(i).val();
+                if(rowOsoba == "") {
+                    $(tel_k).addClass("border-red");
+                    validated = false;
+                }
+                if(rowTel == "") {
+                    rep.find(`input[name="email[]"]`).eq(i).addClass("border-red");
+                    validated = false;
+                }
+            });
+
+
+            //radno vreme
+            rep.find('input[name="radni_dan[]"]').each((i, tel_k) => {
+                var rowOsoba = tel_k.value;
+                var rowTel = rep.find(`input[name="radno_vreme[]"]`).eq(i).val();
+                if(rowOsoba == "") {
+                    $(tel_k).addClass("border-red");
+                    validated = false;
+                }
+                if(rowTel == "") {
+                    rep.find(`input[name="radno_vreme[]"]`).eq(i).addClass("border-red");
+                    validated = false;
+                }
+            });
+            
+        })
+
+        return validated;
+
+
+
+    }
+
+    $('#parent_cat').on('change', (e) => {
+        $('#child_cat').attr('disabled', true); //disable child select
         var term_id = $(e.target).val();
         $.ajax({
             method: "POST",
-            url: "<?php echo get_stylesheet_directory_uri() ?>/scripts/getChildOblasti.php",
+            url: THEME_DIR + "/scripts/getChildOblasti.php",
             data: {
                 term_id: term_id
             },
             success: function(data) {
                 var children = JSON.parse(data);
-                $('#child-cat').empty();
+                $('#child_cat').empty();
                 $.each(children, function(index, item) {
-                    $('#child-cat').append(
+                    $('#child_cat').append(
                         `<option value="${item['term_id']}">${item['name']}</option>`);
                 });
     
-                $('#child-cat').attr('disabled', false); //enable child select
+                $('#child_cat').attr('disabled', false); //enable child select
     
             }
         });
@@ -46,6 +190,32 @@
             var rowIndex = $('#emailovi').find('tr').length;
             var button_id = $(this).attr("id");
             $('#rowemail' + button_id + '').remove();
+        });
+
+    });
+
+    $(document).ready(function() {
+
+        var i = 1;
+        var length;
+
+        $("#addTermin").click(function() {
+            var rowIndex = $('#termini').find('tr').length;
+            i++;
+            $('#termini').append(`<tr id="rowtermin` + i + `">	
+        <td><input type="text" name="radni_dan[]" placeholder="Dan" class="" />
+        </td>
+        <td><input type="text" name="radno_vreme[]" placeholder="Vreme" class="" />
+        </td>
+        <td><button type="button" name="remove" id="` +
+                i + `" class="btn btn-danger btn_remove_termin">X</button></td>
+        </tr>`);
+        });
+
+        $(document).on('click', '.btn_remove_termin', function() {
+            var rowIndex = $('#termini').find('tr').length;
+            var button_id = $(this).attr("id");
+            $('#rowtermin' + button_id + '').remove();
         });
 
     });
@@ -198,6 +368,11 @@
                     }
                   });
                   bounds.extend(place.geometry.location);
+                  console.log(place.geometry.location.lat());
+
+                  //put lat and lng into hidden inputs input
+                  $('input[name="lat"]').val(place.geometry.location.lat());
+                  $('input[name="lng"]').val(place.geometry.location.lng());
          
          
                 }(place));

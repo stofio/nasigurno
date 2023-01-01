@@ -3065,7 +3065,7 @@ ul.options-menu {
     border-radius: 6px;
 }
 
-#dodajOglas input,
+#dodajOglas input:not(input[type="submit"]) ,
 #dodajOglas select {
   border: 1px solid #ddd;
   background: #fff;
@@ -3103,11 +3103,12 @@ ul.options-menu {
   font-weight: bold;
 }
 
-#newOglasForm p.no-line {
+#newOglasForm p.no-line,
+#newOglasForm div.no-line {
 border-bottom: 0;
 }
 
-#newOglasForm input {
+#newOglasForm input:not(input[type="submit"]) {
   padding: 4px 8px;
   font-size: 14px;
   line-height: 1.4;
@@ -3568,4 +3569,22 @@ p.nasl_sl img {
 
 .double-input div {
   width: 49%;
+}
+
+#objaviOglas {
+  margin-top: 20px;
+}
+
+.required {
+  color: #ef1212;
+}
+
+#newOglasForm .border-red {
+  border: 2px solid rgb(244, 67, 54) !important;
+}
+
+.formError {
+  color: #9b142b;
+  background-color: #cf1c1c36;
+  padding: 10px !important;
 }
