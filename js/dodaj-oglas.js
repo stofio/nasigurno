@@ -17,9 +17,28 @@
         
         
         //isFormValid();
-        if(isFormValid(form)) {
+        if(!isFormValid(form)) {
+            console.log(123)
             //send data to database
-            var data = form.serialize();
+            var serdata = form.serialize();
+            $.ajax({
+                method: "POST",
+                url: THEME_DIR + "/scripts/saveOglas.php",
+               // dataType: "JSON",
+        data: new FormData(e.target),
+        processData: false,
+        contentType: false,
+        success: function(data) {
+                    console.log(123)
+                    console.log(data)
+        
+                },
+                error: function(xhr, status, error) {
+                    //var err = eval("(" + xhr.responseText + ")");
+                    console.log(error)
+                  }
+            });
+
         }
         else {
             //show error notice
@@ -32,14 +51,9 @@
         var validated = true;
 
         /*var naslov = form.find('input[name=""]');
-        var naslovna_slika = form.find('input[namenaslov="naslovna_slika"]');
         var opis = form.find('textarea[name="opis"]');
         var parent_cat = form.find('select[name="parent_cat"]');
         var child_cat = form.find('select[name="child_cat"]');
-        var gallery = form.find('input[name="gallery"]');
-        var website = form.find('input[name="website"]');
-        var video = form.find('input[name="video"]');
-        var porezni_broj = form.find('input[name="porezni_broj"]');
         var pac-input = form.find('input[name="pac-input"]');
         var lat = form.find('input[name="lat"]');
         var lng = form.find('input[name="lng"]');
@@ -47,19 +61,13 @@
         var grad = form.find('input[name="grad"]');
         var ulica = form.find('input[name="ulica"]');
         var broj = form.find('input[name="broj"]');
-        var okrug = form.find('input[name="okrug"]');
         var po_broj = form.find('input[name="po_broj"]');*/
 
         var inputs = [
             form.find('input[name="naslov"]'),
-            form.find('input[name="naslovna_slika"]'),
             form.find('textarea[name="opis"]'),
             form.find('select[name="parent_cat"]'),
             form.find('select[name="child_cat"]'),
-            form.find('input[name="gallery"]'),
-            form.find('input[name="website"]'),
-            form.find('input[name="video"]'),
-            form.find('input[name="porezni_broj"]'),
             form.find('input[name="pac-input"]'),
             form.find('input[name="lat"]'),
             form.find('input[name="lng"]'),
@@ -67,7 +75,6 @@
             form.find('input[name="grad"]'),
             form.find('input[name="ulica"]'),
             form.find('input[name="broj"]'),
-            form.find('input[name="okrug"]'),
             form.find('input[name="po_broj"]')
         ];
 
@@ -81,7 +88,6 @@
 
         //validate inputs
         inputs.forEach((inp) => {
-            console.log(inp.val());
             let inputVal = inp.val();
             if(inputVal == "" || inputVal == null || inputVal == undefined) {
                 inp.addClass("border-red");
@@ -137,7 +143,6 @@
             });
             
         })
-
         return validated;
 
 

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * this file is used to import data from old database
+ */
+
 //die('return');
 //return;
 include_once '../../../wp-load.php';
@@ -175,7 +179,6 @@ function insertImages() {
 	echo 'DONE';
 }
 
-
 function rs_upload_from_url( $url, $title = null ) {
 	require_once( ABSPATH . "/wp-load.php");
 	require_once( ABSPATH . "/wp-admin/includes/image.php");
@@ -239,7 +242,6 @@ function rs_upload_from_url( $url, $title = null ) {
 	return (int) $attachment_id;
 }
 
-
 function addAdditionalData() { //kont osoba, tel, 
 	global $wpdb;
 
@@ -296,7 +298,6 @@ function addAdditionalData() { //kont osoba, tel,
 }
 //addAdditionalData();
 
-
 function addMissingPhonesAndContactOsoba() {
 
 		global $wpdb;
@@ -322,7 +323,6 @@ function addMissingPhonesAndContactOsoba() {
 
 		
 }
-
 
 function populateLocationsTable() {
 	global $wpdb;
@@ -350,7 +350,6 @@ function populateLocationsTable() {
     }
 }
 //populateLocationsTable();
-
 
 function assignPostAuthor() {
 	global $wpdb;

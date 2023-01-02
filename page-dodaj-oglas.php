@@ -21,7 +21,7 @@ Template Name: Dodaj oglas
 
         <div class="box" id="dodajOglas">
             <form id="newOglasForm" action="<?php echo get_template_directory_uri() ?>/scripts/save-user-data.php"
-                onkeydown="return event.key != 'Enter';">
+                onkeydown="return event.key != 'Enter';" enctype="multipart/form-data">
                 <div class="oglasi-list row-flex w-100">
 
                     <div class="col-md-6">
@@ -74,7 +74,7 @@ Template Name: Dodaj oglas
                                 <label class="upload__btn">
                                     <span>Izaberi slike za galeriju</span>
                                     <input type="file" accept="image/png, image/gif, image/jpeg" multiple=""
-                                        data-max_length="20" class="upload__inputfile" name="gallery">
+                                        data-max_length="20" class="upload__inputfile" name="gallery[]">
                                 </label>
                             </div>
                             <div class="upload__img-wrap"></div>
