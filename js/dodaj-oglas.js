@@ -1,6 +1,6 @@
 (function() {
 
-    THEME_DIR;
+    THEME_DIR; //theme directory from php template
 
 
     $(document).on('click', () => {
@@ -17,21 +17,20 @@
         
         
         //isFormValid();
-        if(!isFormValid(form)) {
-            console.log(123)
+        if(isFormValid(form)) {
+            var data = new FormData(e.target);
             //send data to database
-            var serdata = form.serialize();
             $.ajax({
                 method: "POST",
                 url: THEME_DIR + "/scripts/saveOglas.php",
-               // dataType: "JSON",
-        data: new FormData(e.target),
-        processData: false,
-        contentType: false,
-        success: function(data) {
-                    console.log(123)
-                    console.log(data)
-        
+                // dataType: "JSON",
+                data: data,
+                processData: false,
+                contentType: false,
+                success: function(oglasUrl) {
+                    //show success
+                    url = JSON.parse(oglasUrl);
+                    showSuccess(url);
                 },
                 error: function(xhr, status, error) {
                     //var err = eval("(" + xhr.responseText + ")");
@@ -45,6 +44,29 @@
             $('input#objaviOglas').before('<p class="formError no-line">Unesi sva polja označena crvenom zvezdicom</p>');
         }
     });
+
+    function showSuccess(oglasUrl) {
+        var $cont = $('#dodajOglas');
+
+        var success = `
+            <div class="success-oglas">
+                <div>
+                    <img src="${THEME_DIR}/icons/success-round-svgrepo-com.svg" />
+                    <h2>Oglas je uspešno objavljen!</h2>
+                </div>
+                <a href="${oglasUrl}">Pogledaj oglas</a>
+            </div>
+        `;
+
+        $cont.children().fadeOut(300, () => {
+            $cont.empty();
+            $cont.append(success);
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+        });
+
+        
+
+    }
 
     function isFormValid(form) {
 
@@ -80,8 +102,7 @@
 
         var repeaters = [
             form.find('#telefoni'),
-            form.find('#emailovi'),
-            form.find('#termini')
+            form.find('#emailovi')
         ];
 
         
@@ -127,7 +148,7 @@
                 }
             });
 
-
+        /*
             //radno vreme
             rep.find('input[name="radni_dan[]"]').each((i, tel_k) => {
                 var rowOsoba = tel_k.value;
@@ -141,13 +162,14 @@
                     validated = false;
                 }
             });
+            */
             
         })
         return validated;
 
-
-
     }
+
+
 
     $('#parent_cat').on('change', (e) => {
         $('#child_cat').attr('disabled', true); //disable child select

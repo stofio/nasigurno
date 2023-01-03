@@ -3588,3 +3588,22 @@ p.nasl_sl img {
   background-color: #cf1c1c36;
   padding: 10px !important;
 }
+
+.success-oglas div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.success-oglas h2 {
+  margin: 0;
+}
+
+.success-oglas img {
+  width: 42px;
+  margin-right: 6px;
+}
+
+.success-oglas a {
+  color: #9b142b;
+}
