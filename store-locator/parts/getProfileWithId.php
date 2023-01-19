@@ -29,7 +29,37 @@ if($post_query->have_posts() ) {
     <h4><?php the_title() ?></h4>
 
     <ul class="info">
-        <li>stars</li>
+        <li>
+            <?php
+                $comments = get_comments(array(
+                    'post_id' => $post->ID,
+                    'status'  => 'approve',
+                ));
+            ?>
+            <?php 
+                $comNum = 0;
+                $ratings = [];
+            ?>
+            <?php foreach($comments as $comment):
+                $comNum++;
+                $r = (int)get_comment_meta($comment->comment_ID, 'stars')[0];
+                array_push($ratings, $r);
+
+                endforeach; 
+
+                //get avarage
+                $av = array_filter($ratings);
+                if(count($av)) {
+                    $average = array_sum($av)/count($av);
+                }
+                else {
+                    $average = 0;
+                }
+            ?>
+            <div class="revStars bigger-stars" style="--rating: <?php echo $average; ?>;">
+                <span>(<?php echo $comNum; ?>)</span>
+            </div>
+        </li>
         <li>
             <div class="wrap">
                 <img src="<?php echo get_stylesheet_directory_uri() . '/store-locator/icons/pin.svg' ?>" width="18">
@@ -69,7 +99,7 @@ if($post_query->have_posts() ) {
         <li>
             <div class="wrap"><img src="<?php echo get_stylesheet_directory_uri() . '/store-locator/icons/web.svg' ?>"
                     width="19"></div>
-            <a href="<?php the_field('website') ?>"><?php the_field('website') ?></a>
+            <a href="<?php the_field('website') ?>" target="_blank"><?php the_field('website') ?></a>
         </li>
         <?php endif; ?>
         <?php if(get_field('radno_vreme')  != '') : ?>

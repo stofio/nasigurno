@@ -173,7 +173,7 @@
 .listing h4 {
   font-size: 20px;
   font-weight: 600;
-  margin: 10px 0 30px 0;
+  margin: 10px 0 20px 0;
 }
 
 .listing .button.flex-align-center {
@@ -181,3 +181,42 @@
 
 }
 
+
+.autocomplete-items,
+  .location-items {
+    display: grid;
+    z-index: 1;
+    color: #222;
+    box-shadow: 0 5px 5px -5px rgb(0 0 0 / 21%) !important;
+    border-radius: 0 0 6px 6px !important;
+    transition: all 0.2s linear;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-top: none;
+    width: 100%;
+  }
+  
+  ​ .autocomplete-items div strong,
+  .location-items div strong {
+    color: rgba(255, 255, 255, 1) !important;
+  }
+  
+  .autocomplete-items div,
+  .location-items div {
+    font-size: 14px;
+    cursor: pointer;
+    padding: 10px 15px;
+  }
+  
+  .autocomplete-items div:last-child,
+  .location-items div:last-child {
+    border: none;
+  }
+  
+  .autocomplete-items div:hover,
+  .location-items div:hover {
+    background-color: rgb(245, 245, 245);
+  }
+  
+  .autocomplete-active {
+    background-color: rgb(245, 245, 245);
+  }

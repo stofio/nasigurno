@@ -547,7 +547,7 @@ input[type=search]::-webkit-search-results-decoration {
   line-height: 40px;
   padding: 0 20px 0 0;
   float: left;
-  width: calc(100% - 100px);
+  width: calc(100% - 55px);
   color: #222;
   font-size: 18px;
   font-weight: 500
@@ -1621,7 +1621,7 @@ section.gray-section {
   }
 
   .header-search-input-item input {
-    width: calc(100% - 100px)
+    width: calc(100% - 55px)
   }
 
   .header-search-input-item input,
@@ -2045,7 +2045,7 @@ section {
 .box h1 {
   font-size: 24px;
   line-height: 30px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   text-align: left;
   font-weight: 600;
 }
@@ -2493,11 +2493,6 @@ header {
   margin-bottom: 0;
 }
 
-.box h1 {
-  font-size: 24px;
-  line-height: 30px;
-  margin-bottom: 20px;
-}
 
 .box .h2 {
   font-size: 18px;
@@ -3365,6 +3360,8 @@ ul.radno-vreme li{
   padding-right:4px;
   text-decoration: none;
   margin:0;
+  color: #fff;
+  user-select: none;
 }
 
 .stars a:after {
@@ -3606,4 +3603,90 @@ p.nasl_sl img {
 
 .success-oglas a {
   color: #9b142b;
+}
+
+.recenzije .user-img-wrap {
+  width: 7%;
+  flex-shrink: 0;
+  margin-right: 20px;
+  height: 40px;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .recenzije .user-img-wrap {
+    width: 12%;
+  }
+}
+
+.recenzije a:hover {
+  text-decoration: none;
+}
+
+.review-stars .stars {
+  margin-top: -17px;
+  margin-left: 0;
+}
+
+.review-stars .stars a {
+  margin-right: -4px;
+}
+
+
+.review-stars .stars a:after {
+  font-size: 14px;
+}
+
+.review-stars .stars * {
+  pointer-events: none;
+}
+
+
+.revStars {
+  --percent: calc(var(--rating) / 5 * 100%);
+  display: inline-block;
+  font-size: 20px;
+  font-family: Times;
+  line-height: 1;
+}
+.revStars::before {
+  content: "★★★★★";
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #ffd000 var(--percent), rgb(184, 184, 184) var(--percent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.revStars span {
+  font-size: 14px;
+  color: #717171;
+}
+
+.bigger-stars {
+  margin-bottom: 16px;
+}
+
+.revStars.bigger-stars {
+  font-size: 24px;
+}
+
+.single-share-box {
+  width: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+
+.single-share-box a {
+  width: 25px;
+}
+
+.slicne-loc .header-wrap a {
+  font-weight: 500;
+}
+
+.slicne-loc .info span {
+ color: #999;
 }

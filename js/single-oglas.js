@@ -2,7 +2,7 @@
 
     var filesPath = THEME_DIR;
 
-    mapboxgl.accessToken = 'pk.eyJ1Ijoic3RvZmlvIiwiYSI6ImNrZ3duNHhmdDA0MnoycXBmYWVlYjJtMHgifQ.eS9K2EYvkEEDASW4SBEjdQ';
+    mapboxgl.accessToken = 'pk.eyJ1IjoidXNlcm1pcnphIiwiYSI6ImNsZDMwYTk0ZzBhc2MzcW9kaDc1c2Y2eGIifQ.FKXx1zgzRj0PvGjXcJIj9Q';
 
     $(window).on('load', () => {
         showMap();
@@ -10,6 +10,7 @@
 
 
     function showMap() {
+        
         $lat = $('#single-map').attr('data-lat') * 1;
         $lng = $('#single-map').attr('data-lng') * 1;
         $title = $('#single-map').attr('data-title');
@@ -18,7 +19,7 @@
 
         const map = new mapboxgl.Map({
             container: 'single-map',
-            style: 'mapbox://styles/stofio/cl83ka2bd005414o6t7wcbxrd',
+            style: 'mapbox://styles/usermirza/cld31g82g000w01lcoi46sua9',
             center: [$lng, $lat],
             zoom: 12
         });

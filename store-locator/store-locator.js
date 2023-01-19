@@ -2,12 +2,15 @@
 
 var filesPath = THEME_DIR;
 var currentMarkerData;
+var mbAccessToken = 'pk.eyJ1IjoidXNlcm1pcnphIiwiYSI6ImNsZDMwYTk0ZzBhc2MzcW9kaDc1c2Y2eGIifQ.FKXx1zgzRj0PvGjXcJIj9Q';
 
-mapboxgl.accessToken = 'pk.eyJ1Ijoic3RvZmlvIiwiYSI6ImNrZ3duNHhmdDA0MnoycXBmYWVlYjJtMHgifQ.eS9K2EYvkEEDASW4SBEjdQ';
+var geocodingClient = mapboxSdk({ accessToken: mbAccessToken });
+mapboxgl.accessToken = mbAccessToken;
+
 
 const map = new mapboxgl.Map({
     container: 'nasigurno-map',
-    style: 'mapbox://styles/stofio/cl83ka2bd005414o6t7wcbxrd',
+    style: 'mapbox://styles/usermirza/cld31g82g000w01lcoi46sua9',
     center: [18.413420, 43.85643],
     zoom: 12
 });
@@ -243,6 +246,203 @@ map.on('load', () => {
 
     
   }
+
+
+  autocompleteAddressBox(document.getElementById("stLocSearch"));
+
+
+  function autocompleteSuggestionMapBoxAPI(inputParams, callback) {
+    geocodingClient.geocoding.forwardGeocode({
+        query: inputParams,
+        countries: ['Rs'],
+        autocomplete: true,
+        limit: 5,
+      })
+      .send()
+      .then(response => {
+        const match = response.body;
+        callback(match);
+      });
+  }
+
+  function autocompleteAddressBox(inp, callback) {
+
+    var currentLocationFocus;
+    inp.addEventListener('click', function(e) {
+      var a, b, i, val = this.value;
+      //closeLocations();
+      currentLocationFocus = -1;
+
+      a = document.createElement("DIV");
+      a.setAttribute("id", this.id + "location-list");
+      a.setAttribute("class", "location-items");
+      this.parentNode.appendChild(a);
+
+    })
+
+    var currentSuggesFocus;
+    inp.addEventListener("input", function(e) {
+      var a, b, i, val = this.value;
+      closeAllLists();
+      closeLocations();
+      if (!val) {
+        $(inp).attr('data-lat', '');
+        $(inp).attr('data-lng', '');
+        return false;
+      }
+      currentSuggesFocus = -1;
+      a = document.createElement("DIV");
+      a.setAttribute("id", this.id + "autocomplete-list-st");
+      a.setAttribute("class", "autocomplete-items");
+      this.parentNode.appendChild(a);
+
+      // suggestion list MapBox api called with callback
+      autocompleteSuggestionMapBoxAPI($(inp).val(), function(results) {
+        results.features.forEach(function(key) {
+          b = document.createElement("DIV");
+          b.innerHTML = "<strong>" + key.place_name.substr(0, val.length) + "</strong>";
+          b.innerHTML += key.place_name.substr(val.length);
+          b.innerHTML += "<input type='hidden' data-lat='" + key.geometry.coordinates[1] + "' data-lng='" + key.geometry.coordinates[0] + "'  value='" + key.place_name + "'>";
+          b.addEventListener("click", function(e) {
+            let lat = $(this).find('input').attr('data-lat');
+            let long = $(this).find('input').attr('data-lng');
+            let title = $(this).find('input').attr('value');
+            let postalcode = '';
+            let city = '';
+            let country = '';
+
+            if(key.context) {
+              key.context.forEach(function(item) {
+                var reqstr = item.id.substring(0, item.id.indexOf('.'));
+                reqstr == 'postcode' ? postalcode = item.text : true;
+                reqstr == 'place' ? city = item.text : true;
+                reqstr == 'country' ? country = item.text : true;
+              });
+            }
+          
+
+            inp.value = $(this).find('input').val();
+            inp.title = $(this).find('input').val();
+            $(inp).attr('data-lat', lat);
+            $(inp).attr('data-lng', long);
+            $(inp).attr('city', city);
+            $(inp).attr('country', country);
+            $(inp).attr('postalcode', postalcode);
+
+            setPointToMap([long, lat], true);
+            closeAllLists();
+            //}
+          });
+          a.appendChild(b);
+        });
+      })
+    });
+
+    /*when click over the input*/
+    document.addEventListener("click", function(e) {
+      closeAllLists(e.target);
+    });
+
+    document.addEventListener("click", function(e) {
+      if (e.target.id !== 'startPoint' && e.target.id !== 'destPoint') {
+        closeLocations(e.target);
+      }
+    });
+
+
+    //flash this coordinate
+    var inputIcon = $($(inp).closest('div').prev('button'));
+    $(inputIcon).on('click', function() {
+      if ($(inp).attr('data-lat') !== '' && $(inp).attr('data-lng') !== '') {
+        //flash this coordinate
+        let lat = $(inp).attr('data-lat');
+        let lng = $(inp).attr('data-lng');
+        let cordId = (lng + lat).split('.').join('');
+        $('#' + 'm' + cordId).addClass('animate__flash');
+        setTimeout(function() {
+          $('#' + 'm' + cordId).removeClass('animate__flash');
+        }, 1000);
+      }
+    })
+
+
+    inp.addEventListener("keydown", function(e) {
+      var x = document.getElementById(this.id + "autocomplete-list-st");
+      if (x) x = x.getElementsByTagName("div");
+      if (e.keyCode == 40) {
+        /*If the arrow DOWN key is pressed*/
+        currentSuggesFocus++;
+        addActive(x);
+      } else if (e.keyCode == 38) { //up
+        /*If the arrow UP key is pressed*/
+        currentSuggesFocus--;
+        addActive(x);
+      } else if (e.keyCode == 13) {
+        /*If the ENTER key is pressed*/
+        e.preventDefault();
+        if (currentSuggesFocus > -1) {
+          if (x) x[currentSuggesFocus].click();
+        }
+      }
+    });
+
+    function addActive(x) {
+      /*a function to classify an item as "active":*/
+      if (!x) return false;
+      /*start by removing the "active" class on all items:*/
+      removeActive(x);
+      if (currentSuggesFocus >= x.length) currentSuggesFocus = 0;
+      if (currentSuggesFocus < 0) currentSuggesFocus = (x.length - 1);
+      /*add class "autocomplete-active":*/
+      x[currentSuggesFocus].classList.add("autocomplete-active");
+    }
+
+    function removeActive(x) {
+      /*a function to remove the "active" class from all autocomplete items:*/
+      for (var i = 0; i < x.length; i++) {
+        x[i].classList.remove("autocomplete-active");
+      }
+    }
+
+    function closeAllLists(elmnt) {
+      /*close all autocomplete lists in the document,
+      except the one passed as an argument:*/
+      var x = document.getElementsByClassName("autocomplete-items");
+      for (var i = 0; i < x.length; i++) {
+        if (elmnt != x[i] && elmnt != inp) {
+          x[i].parentNode.removeChild(x[i]);
+        }
+      }
+    }
+
+    function closeLocations(elmnt) {
+      var x = document.getElementsByClassName("location-items");
+      for (var i = 0; i < x.length; i++) {
+        if (elmnt != x[i] && elmnt != inp) {
+          x[i].parentNode.removeChild(x[i]);
+        }
+      }
+    }
+
+
+    function setPointToMap(coordinates) {
+      var el = document.createElement('div');
+      el.className = 'marker';
+      cordId = coordinates.toString().split('.').join('').split(',').join('');
+      el.setAttribute('id', 'm' + cordId);
+
+      new mapboxgl.Marker(el)
+        .setLngLat(coordinates)
+        .addTo(map);
+
+        map.flyTo({
+          center: coordinates,
+          essential: true
+        });
+    }
+
+    
+  } //autocompleteAddressBox()
 
 
 }); //map load

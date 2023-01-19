@@ -3,81 +3,60 @@
 include_once '../../../../wp-load.php';
 global $wpdb;
 
+if(!is_user_logged_in()) return;
 
-print_r($_POST);
-print_r($_FILES);
+$user = wp_get_current_user();
 
 
 //upload images
-foreach($_FILES['images']['tmp_name'] as $key => $tmp) {
-    $filename = $_FILES['images']['name'][$key];
-    $path_info = pathinfo($filename);
-    $extension = $path_info['extension'];
-
-    $imgId = rs_upload_from_url_custom($tmp, $filename, $filename, $extension );
-    print_r($imgId);
+$gallArray = array();
+foreach($_FILES['images']['tmp_name'] as $i => $img) {
+//add to gallery
+	$gallImgId = uploadFile( $_FILES['images']['tmp_name'][$i], $_FILES['images']['name'][$i] );
+	$gallArray[] = $gallImgId;
 }
 
+// $attach_id holds the ID of an image I want to attach to the comment in comment_meta
+
+$data = array(
+	'comment_post_ID'        => $_POST['oglasId'],
+	'comment_author'         => $user->user_nicename,
+	'comment_author_email'   => $user->user_email,
+	'comment_content'        => $_POST['add_review_text'],
+	'comment_type'           => '',
+	'comment_date'           => date('Y-m-d H:i:s'),
+	'comment_approved'       => 0,
+);
+
+$comm_id = wp_insert_comment( $data );
+
+add_comment_meta( $comm_id, 'stars', $_POST['add_review_rating'] );
+
+if(sizeof($gallArray) > 0) {
+	//save commentmeta images
+	add_comment_meta( $comm_id, 'comment_images', serialize($gallArray) );
+}
+
+//save review
 
 
-
-function rs_upload_from_url_custom( $tmp, $title = null, $filename, $extension ) {
+function uploadFile( $tmp, $title = null ) {
 	require_once( ABSPATH . "/wp-load.php");
 	require_once( ABSPATH . "/wp-admin/includes/image.php");
 	require_once( ABSPATH . "/wp-admin/includes/file.php");
 	require_once( ABSPATH . "/wp-admin/includes/media.php");
 	
-	// Download url to a temp file
-	//$tmp = download_url( $url );
-	if ( is_wp_error( $tmp ) ) return false;
-	
-	// Get the filename and extension ("photo.png" => "photo", "png")
-	//$filename = pathinfo($url, PATHINFO_FILENAME);
-	//$extension = pathinfo($url, PATHINFO_EXTENSION);
-	
-	// An extension is required or else WordPress will reject the upload
-	if ( ! $extension ) {
-		// Look up mime type, example: "/photo.png" -> "image/png"
-		$mime = mime_content_type( $tmp );
-		$mime = is_string($mime) ? sanitize_mime_type( $mime ) : false;
-		
-		// Only allow certain mime types because mime types do not always end in a valid extension (see the .doc example below)
-		$mime_extensions = array(
-			// mime_type         => extension (no period)
-			'text/plain'         => 'txt',
-			'text/csv'           => 'csv',
-			'application/msword' => 'doc',
-			'image/jpg'          => 'jpg',
-			'image/jpeg'         => 'jpeg',
-			'image/gif'          => 'gif',
-			'image/png'          => 'png',
-			'video/mp4'          => 'mp4',
-		);
-		
-		if ( isset( $mime_extensions[$mime] ) ) {
-			// Use the mapped extension
-			$extension = $mime_extensions[$mime];
-		}else{
-			// Could not identify extension
-			@unlink($tmp);
-			return false;
-		}
-	}
-	
-	
-	
+	$filename = pathinfo($url, PATHINFO_FILENAME);
+
 	// Upload by "sideloading": "the same way as an uploaded file is handled by media_handle_upload"
 	$args = array(
-		'name' => "$filename.$extension",
+		'name' => "$title",
 		'tmp_name' => $tmp,
 	);
 	
 	// Do the upload
 	$attachment_id = media_handle_sideload( $args, 0, $title);
-	
-	// Cleanup temp file
-	@unlink($tmp);
-	
+
 	// Error uploading
 	if ( is_wp_error($attachment_id) ) return false;
 	

@@ -22,6 +22,7 @@ $children = get_terms( $term->taxonomy, array(
             <section class="page-main-content">
                 <div class="box">
                     <h1><?php echo removeCatBrackets($term->name) ?></h1>
+                    <p><?php echo $term->description ?></p>
 
                     <ul class="list-categories">
                         <?php

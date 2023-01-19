@@ -50,6 +50,7 @@ $the_query = new WP_Query( $args );
                     <?php endif; ?>
 
                     <h1><?php echo removeCatBrackets(get_queried_object()->name) ?></h1>
+                    <p><?php echo get_queried_object()->description ?></p>
 
                 </div>
 
@@ -70,6 +71,36 @@ $the_query = new WP_Query( $args );
 
                             <h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 
+                            <?php
+                                $comments = get_comments(array(
+                                    'post_id' => $post->ID,
+                                    'status'  => 'approve',
+                                ));
+                                ?>
+                            <?php 
+                                $comNum = 0;
+                                $ratings = [];
+                                ?>
+                            <?php foreach($comments as $comment):
+                                $comNum++;
+                                $r = (int)get_comment_meta($comment->comment_ID, 'stars')[0];
+                                array_push($ratings, $r);
+
+                                endforeach; 
+
+                                //get avarage
+                                $av = array_filter($ratings);
+                                if(count($av)) {
+                                    $average = array_sum($av)/count($av);
+                                }
+                                else {
+                                    $average = 0;
+                                }
+                            ?>
+                            <div class="revStars bigger-stars" style="--rating: <?php echo $average; ?>;">
+                                <span>(<?php echo $comNum; ?>)</span>
+                            </div>
+
                             <?php if(get_field('opis') != ''): ?>
                             <p class="listing-desc">
                                 <?php echo wp_trim_words( get_field('opis'), 30, '...' ); ?>
@@ -89,7 +120,6 @@ $the_query = new WP_Query( $args );
                                     if(get_field('grad') != '') echo ' (' . get_field('grad') . ')'; 
                                     if(get_field('postanski_broj') != '') echo ', ' . get_field('postanski_broj'); 
                                     if(get_field('drzava') != '') echo ', ' . get_field('drzava'); 
-                                    
                                     ?>
 
                                 </li>

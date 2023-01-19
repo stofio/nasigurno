@@ -3,6 +3,26 @@
 Template Name: Moji oglasi
 */
 ?>
+
+<?php
+function get_oglasi_breadcrumb() {
+    global $post;
+    $terms = get_the_terms( $post->ID , 'oblast' )[0];
+
+    if($terms->parent) {
+        //get parent and echo
+        $parent = get_term( $terms->parent );
+        //var_dump($parent);
+        if($parent->name) {
+            echo '<a href="'.get_term_link($parent->term_id).'" rel="nofollow">'. $parent->name .'</a>';
+        }
+    }
+
+    
+
+    return;
+}
+?>
 <?php get_header(); ?>
 
 <div class="container">
@@ -62,7 +82,6 @@ Template Name: Moji oglasi
                                     <a href="<?php the_permalink(); ?>" title="">
                                         <h3><?php the_title(); ?></h3>
                                     </a>
-                                    <div class="stars">stars</div>
 
                                     <ul class="info">
 
@@ -84,7 +103,11 @@ Template Name: Moji oglasi
 
                                     <span class="my-oglasi-date">
                                         <img src="<?php echo get_template_directory_uri() ?>/icons/tags.svg" />
-                                        Kategorija:
+                                        Kategorija:&nbsp
+                                        <?php
+                                        
+                                        get_oglasi_breadcrumb();
+                                        ?>
                                     </span>
                                 </div>
                                 <div class="my-oglas-options">

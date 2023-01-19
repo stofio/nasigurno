@@ -9,6 +9,12 @@ Template Name: Store Locator
 <link href="https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.js"></script>
 
+<script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet"
+    href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
+    type="text/css" />
+
 
 <link rel="stylesheet" type="text/css"
     href="<?php echo get_stylesheet_directory_uri() . '/store-locator/store-locator.css' ?>">
@@ -22,9 +28,10 @@ Template Name: Store Locator
         <div class="header-search vis-header-search-map">
             <div class="header-search-input-item">
                 <button class="header-search-button left-side"><i class="fa fa-search"></i></button>
-                <form id="search" action><input type="search" placeholder="Pretraži na nasigurno" value="" /></form>
+                <input id="stLocSearch" autocomplete="no" type="search" data-lat="" data-lng=""
+                    placeholder="Pretraži na nasigurno" value="" />
                 <button class="header-search-button right-side hidden"><i class="fa fa-times"></i></button>
-                <ul class="autocomplete-list"></ul>
+                <ul class="autocomplete-list-st"></ul>
             </div>
         </div>
     </div>

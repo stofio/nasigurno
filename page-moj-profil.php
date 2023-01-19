@@ -187,9 +187,9 @@ Template Name: Moj Profil
                                         <h3>Opcije: </h3>
                                     </div>
                                     <ul class="sidebar-opcije">
-                                        <li><a href="#mojiOglasi">Moji oglasi</a></li>
-                                        <li><a href="#mojProfil">Moj profil</a></li>
-                                        <li><a href="#promeniLozinku">Promeni lozinku</a></li>
+                                        <li><a href="/moj-profil/#mojProfil">Moj profil</a></li>
+                                        <li><a href="/moj-profil/#promeniLozinku">Promeni lozinku</a></li>
+                                        <li><a href="/moji-oglasi/">Moji oglasi</a></li>
                                     </ul>
                                 </div>
                             </div>
