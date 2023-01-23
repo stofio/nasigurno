@@ -2,6 +2,11 @@
 /*
 Template Name: Registracija
 */
+
+if(is_user_logged_in()) {
+    wp_redirect( '/moj-profil' );
+    exit();
+}
 ?>
 <?php get_header(); ?>
 
