@@ -14,22 +14,37 @@
     $('#newOglasForm').on('submit', (e) => {
         e.preventDefault();
         var form = $(e.target);
-        
-        
+
         //isFormValid();
         if(isFormValid(form)) {
             var data = new FormData(e.target);
+
+            //append old imgs ids
+            var oldImgIds = [];
+            $.each($('.upload__img-box .img-bg'), (i, im) => {
+                if($(im).attr('data-gallImgId')) {
+                    oldImgIds.push($(im).attr('data-gallImgId') * 1 );
+                }
+            });
+
+            //add to formata
+            if(oldImgIds) {
+                data.append('oldGallImgs', JSON.stringify(oldImgIds));
+            }
+
+            //append id
+            data.append('oglasId', $('#oglasId').val());
+
             //send data to database
             $.ajax({
                 method: "POST",
-                url: THEME_DIR + "/scripts/saveOglas.php",
+                url: THEME_DIR + "/scripts/editOglas.php",
                 // dataType: "JSON",
                 data: data,
                 processData: false,
                 contentType: false,
                 success: function(oglasUrl) {
                     //show success
-                    console.log(oglasUrl);
                     url = JSON.parse(oglasUrl);
                     showSuccess(url);
                 },
@@ -362,15 +377,7 @@
     $(document).ready(function() {
  
         function init() {
-            var map = new google.maps.Map(document.getElementById('map-canvas'), {
-              componentRestrictions: {country: ["IT"]},
-              center: {
-                lat: 43.85643,
-                lng: 18.413420
-              },
-              zoom: 12
-            });
-         
+          
             var searchBox = new google.maps.places.SearchBox(document.getElementById('pac-input'));
            // map.controls[google.maps.ControlPosition.TOP_CENTER].push(document.getElementById('pac-input'));
             

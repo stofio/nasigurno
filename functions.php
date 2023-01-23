@@ -263,7 +263,7 @@ function removeAdminBarForKorisnik() {
 
 // Remove tags support from posts
 function myprefix_unregister_tags() {
-    unregister_taxonomy_for_object_type('post_tag', 'post');
+    //unregister_taxonomy_for_object_type('post_tag', 'post');
 }
 add_action('init', 'myprefix_unregister_tags');
 
@@ -271,30 +271,76 @@ add_action('init', 'myprefix_unregister_tags');
 /**
  * on post save/update, update the locations table
  */
-add_action( 'save_post_oglasi', 'update_locations_table', 10, 3 );
+add_action( 'save_post_oglasi', 'save_in_locations_table', 100, 3 );
 
-function update_locations_table( $post_ID, $post, $update ) {
+function save_in_locations_table( $post_ID, $post, $update ) {
   //error_log("Oglas updated: ");
   //error_log(print_r( $post, true ));
 
-  //get new oglasi data
-  $meta = get_post_meta($post_ID);
+  if(!$_POST) return;
 
-  $lat = unserialize($meta['mapa'][0])['lat'];
-  $lng = unserialize($meta['mapa'][0])['lng'];
-  $postname = $post->post_name;
-  $drzava = $meta['drzava'][0];
-  $grad = $meta['grad'][0];
-  $address = $meta['adresa'][0];
-  $postcode = $meta['postanski_broj'][0];
-  $latlng = "POINT( $lat $lng )";
-  
-  global $wpdb;
-    $results = $wpdb->get_results( "INSERT INTO wp_nasigurno_lokacije (`post_id`, `post_name`, `drzava`, `grad`, `address`, `postcode`, `center_point`) 
-        VALUES ($post_ID, '$postname', '$drzava', '$grad', '$address', '$postcode', ST_GeomFromText('POINT($lat $lng)') )" );
+  $gMapData = json_decode( stripslashes($_POST['acf']['field_6316795176b74']) );
 
-   // error_log(print_r( $results, true ));
+   //get new oglasi data
+    $lat = $gMapData->lat;
+    $lng = $gMapData->lng;
+    $postname = $_POST['post_title'];
+    $drzava = $_POST['acf']['field_631677e476b6a'];
+    $grad = $_POST['acf']['field_6316779c76b67'];
+    $address = $_POST['acf']['field_6316777676b66'];
+    $postcode = $_POST['acf']['field_631677a076b68'];
+
+    $url = get_permalink($post_ID);
+    error_log(print_r( $url, true ));
+    $urlNew = str_replace('http://localhost/nasigurno', 'https://nasigurno.com', $url);
+
+    if($lat !== NULL && $lng !== NULL && $postname !== NULL && $drzava !== NULL && $grad !== NULL && $address !== NULL && $postcode !== NULL) {
+        global $wpdb;
+
+        $locationRecord = $wpdb->get_results("SELECT post_id FROM `wp_nasigurno_lokacije` WHERE `post_id` = $post_ID");
+
+
+        if(!$locationRecord) {
+            //create
+          error_log("Oglas creat: ");
+          $results = $wpdb->get_results( "INSERT INTO wp_nasigurno_lokacije (`post_id`, `post_name`, `drzava`, `grad`, `address`, `postcode`, `center_point`, `url`) 
+              VALUES ($post_ID, '$postname', '$drzava', '$grad', '$address', '$postcode', ST_GeomFromText('POINT($lat $lng)'), '$urlNew' )" );
+        }
+        else {
+            if($update) {
+                //update
+                $results = $wpdb->get_results( "UPDATE wp_nasigurno_lokacije SET 
+                `post_name` = '$postname', `drzava` = '$drzava', `grad` = '$grad', `address` = '$address', `postcode` = '$postcode', 
+                `center_point` = ST_GeomFromText('POINT($lat $lng)'), `url` = '$urlNew'
+                 WHERE `post_id`= $post_ID" );
+              } 
+              else{
+                //create
+                error_log("Oglas creat: ");
+                $results = $wpdb->get_results( "INSERT INTO wp_nasigurno_lokacije (`post_id`, `post_name`, `drzava`, `grad`, `address`, `postcode`, `center_point`, `url`) 
+                    VALUES ($post_ID, '$postname', '$drzava', '$grad', '$address', '$postcode', ST_GeomFromText('POINT($lat $lng)'), '$urlNew' )" );
+              }
+        }
+
+    }
+
 }
+
+add_action( 'before_delete_post', 'delete_in_locations_table' );
+function delete_in_locations_table( $postid ){
+    global $post_type;   
+
+    error_log(print_r( $post_type, true ));
+    error_log(print_r( $postid, true ));
+
+    if ( $post_type != 'oglasi' ) return;
+
+    global $wpdb;
+
+    $result = $wpdb->get_results("DELETE from wp_nasigurno_lokacije WHERE `post_id` = $postid");
+
+}
+
 
 /**
  * fix for pagination 404 error for category

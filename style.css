@@ -523,12 +523,13 @@ img.bg {
 
 .logo-holder img {
   height: 100%;
-  width: auto
+  width: auto;
+  margin-right: 20px;
 }
 
 .vis-header-search {
   float: right;
-  margin-left: 30px;
+  margin-left: 15px;
   position: relative;
   top: 9px;
   background: transparent
@@ -655,7 +656,7 @@ input[type=search]::-webkit-search-results-decoration {
 }
 
 .header-search .header-search-input-item {
-  width: 450px;
+  width: 400px;
 }
 
 .show-search-button {
@@ -717,11 +718,9 @@ input[type=search]::-webkit-search-results-decoration {
 .nav-holder {
   float: left;
   position: relative;
-  margin-right: 10px;
   opacity: 1;
   right: 0;
   visibility: visible;
-  margin-left: 30px;
 }
 
 .nav-holder nav {

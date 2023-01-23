@@ -113,8 +113,8 @@ function get_oglasi_breadcrumb() {
                                 <div class="my-oglas-options">
                                     <img src="<?php echo get_template_directory_uri() ?>/icons/dots.svg">
                                     <ul class="options-menu">
-                                        <li><a href="#">Izmeni oglas</a></li>
-                                        <li><a href="#">Obriši oglas</a></li>
+                                        <li><a href="/izmeni-oglas/?id=<?php echo $post->ID ?>">Izmeni oglas</a></li>
+                                        <!-- <li><a href="#">Obriši oglas</a></li> -->
                                     </ul>
                                 </div>
 

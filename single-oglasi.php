@@ -581,6 +581,23 @@ wp_reset_query();
             <div class="col-md-4">
 
                 <aside class="box-widget-wrap full-height">
+                    <?php
+                    $author_id = get_post_field( 'post_author', $post->ID );
+                    $user_ID = get_current_user_id();
+                        if($author_id == $user_ID) :
+                            ?>
+                    <div class="box-widget-content">
+                        <ul class="sidebar-opcije">
+                            <li><a class="btn transparent-btn red-bord"
+                                    href="/izmeni-oglas/?id=<?php echo $post->ID ?>">
+                                    Izmeni oglas</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <?php
+                        endif;
+                    ?>
                     <div class="sticky-sidebar small-top fl-wrap">
                         <div class="box-widget-item fl-wrap">
                             <div class="box-widget">
