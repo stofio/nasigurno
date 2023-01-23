@@ -11,7 +11,7 @@ Template Name: Blog
         <div class="section-title">
             <h1><span>Blog</span></h1>
         </div>
-        <div class="row row-flex fl">
+        <div class="row-flex fl">
             <div class="col-md-8">
                 <div class="list-single-main-wrapper fl-wrap">
 

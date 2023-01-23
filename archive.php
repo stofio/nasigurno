@@ -6,7 +6,7 @@
         <div class="section-title">
             <h1>Kategorija: <span><?php echo single_cat_title(); ?></span></h1>
         </div>
-        <div class="row row-flex fl">
+        <div class="row-flex fl">
             <div class="col-md-8">
                 <div class="list-single-main-wrapper fl-wrap">
 

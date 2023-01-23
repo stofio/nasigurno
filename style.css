@@ -557,7 +557,7 @@ input[type=search]::-webkit-search-results-decoration {
   border-radius: 6px;
   overflow: hidden;
   background: #fff;
-  width: 400px;
+  width: 650px;
   max-width: 100%;
   border: 1px solid #ddd
 }
@@ -654,6 +654,10 @@ input[type=search]::-webkit-search-results-decoration {
   font-size: 16px
 }
 
+.header-search .header-search-input-item {
+  width: 450px;
+}
+
 .show-search-button {
   display: none;
   color: #fff;
@@ -706,7 +710,6 @@ input[type=search]::-webkit-search-results-decoration {
   .header-search-input-item,
   .header-search-input-item input,
   .header-search-input-item .header-search-button {
-    background: #f2f2f2;
     border: none
   }
 }
@@ -1663,7 +1666,7 @@ section.gray-section {
 
   .list-carousel.mob-horizontal-scroll {
     padding: 0;
-    margin: 0 -20px
+    margin: 0;
   }
 
   .mob-horizontal-scroll .listing-carousel {
@@ -2899,7 +2902,8 @@ ul.options-menu {
 
 
 .sidebar-opcije {
-  list-style: inside;
+  list-style: none;
+
 }
 
 .sidebar-opcije li {
@@ -3204,7 +3208,7 @@ border-bottom: 0;
     display: flex;
     justify-content: center;
     background-color: #d3d3d3;
-    padding: 20px 0;
+    padding: 60px 0;
     max-width: 700px;
     border-radius: 6px;
 }
@@ -3231,12 +3235,11 @@ border-bottom: 0;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  max-width: 1000px;
   margin: 0 auto;
 }
 
 .single-flag {
-    width: 200px;
+    width: 150px;
     border-radius: 3px;
     background-color: #fff;
     border: 1px solid #ddd;
@@ -3245,20 +3248,20 @@ border-bottom: 0;
 }
 
 .single-flag-img img {
-  max-height: 200px;
+  max-height: 150px;
   object-fit: cover;
   border-radius: 3px 3px 0 0;
 }
 
 .single-flag-title {
-  min-height: 110px;
+  min-height: 100px;
   border-top: 1px solid #ddd;
 }
 
 .single-flag-title h3 {
   padding: 15px;
-  padding-top: 30px;
-  font-size: 20px;
+  padding-top: 18px;
+  font-size: 16px;
   line-height: 25px;
 }
 
@@ -3689,4 +3692,93 @@ p.nasl_sl img {
 
 .slicne-loc .info span {
  color: #999;
+}
+
+.sidebar-opcije span.icon {
+  margin-right: 6px;
+}
+
+.sidebar-opcije .black-bord {
+  color: #222;
+  border-color: #222;
+}
+
+.sidebar-opcije .red-bord {
+  color: #9b142b;
+  border-color: #9b142b;
+  font-size: 16px;
+}
+
+.sidebar-opcije a {
+  justify-content: start !important;
+}
+
+@media(max-width: 500px) {
+  #nova-recenzija textarea {
+    width: 100%;
+  }
+  .single-flag {
+    width: 124px;
+    margin: 10px 7px;
+  }
+  .glider-prev, .glider-next {
+    display: none;
+  }
+  .head-prof-m span {
+    display: none;
+  }
+  .head-prof-m a {
+    font-size: 18px;
+  }
+
+}
+
+.close-s {
+  position: absolute;
+  display: none !important;
+}
+
+@media(max-width:768px) {
+  .autocomplete-list {
+    top: 60px;
+  }
+  .close-s {
+    display: flex !important;  
+  }
+  
+}
+
+@media(max-width: 1180px) {
+  .nav-holder.main-menu {
+    opacity: 0;
+    visibility: hidden;
+    width: 100%;
+    margin-right: 0;
+    right: 0;
+    margin: 0;
+  }
+  .nav-holder.main-menu.is-visible {
+    opacity: 1;
+    visibility: visible;
+  }
+  .main-menu nav ul {
+    display: flex;
+    flex-direction: column;
+  }
+  .nav-holder nav {
+    float: left;
+  }
+}
+
+@media(max-width: 768px) {
+  #novi-oglas .col-md-6 {
+    width: 100%;
+  }
+  .my-prof-nav.nav-holder nav li ul {
+    left: -100px;
+  }
+}
+
+.listing h2 {
+  margin-top: 20px;
 }

@@ -144,26 +144,7 @@ function get_oglasi_breadcrumb() {
 
             <div class="col-md-4">
 
-                <aside class="box-widget-wrap full-height">
-
-                    <div class="sticky-sidebar small-top fl-wrap">
-                        <div class="box-widget-item fl-wrap">
-                            <div class="box-widget">
-                                <div class="box-widget-content">
-                                    <div class="box-widget-item-header">
-                                        <h3>Opcije: </h3>
-                                    </div>
-                                    <ul class="sidebar-opcije">
-                                        <li><a href="#mojiOglasi">Moji oglasi</a></li>
-                                        <li><a href="#mojProfil">Moj profil</a></li>
-                                        <li><a href="#promeniLozinku">Promeni lozinku</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </aside>
+                <?php include(get_template_directory() . '/parts/sidebar-moj-profil.php') ?>
 
             </div><!-- col-md-4-->
 
@@ -172,6 +153,14 @@ function get_oglasi_breadcrumb() {
 
     </section>
 </div>
+
+
+<script>
+var filesPath = '<?php echo get_stylesheet_directory_uri(); ?>';
+</script>
+
+<script src="<?php echo get_stylesheet_directory_uri() . '/js/moji-oglasi.js' ?>"></script>
+
 
 
 

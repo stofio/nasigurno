@@ -51,11 +51,28 @@ function removeCatBrackets($catName) {
 function register_my_menus() {
     register_nav_menus(
         array(
-            'header-menu' => __( 'Header menu' )
+            'pomoc' => 'Pomoc',
+            'drzave' => 'Drzave',
+            'profil' => 'Profil',
         )
     );
 }
 add_action( 'init', 'register_my_menus' );
+
+// Add Sidebars
+add_action( 'widgets_init', 'function_widgets_init' );
+function function_widgets_init()
+{
+  register_sidebar( array (
+    'name' => __( 'Sidebar Widget Area', 'textdomain' ),
+    'id' => 'primary-widget-area',
+    'before_widget' => '<li id="%1$s" class="widget-container %2$s">',
+    'after_widget' => "</li>",
+    'before_title' => '<h3 class="widget-title">',
+    'after_title' => '</h3>',
+   ) );
+
+ }
 
 /*
  * svg support
@@ -86,6 +103,46 @@ function fix_svg() {
 }
 add_action( 'admin_head', 'fix_svg' );
 
+/**
+ * 
+ * TAGS for Oglasi
+ * 
+ */
+add_action( 'init', 'create_tag_taxonomies', 0 );
+
+//create two taxonomies, genres and tags for the post type "tag"
+function create_tag_taxonomies() 
+{
+  // Add new taxonomy, NOT hierarchical (like tags)
+  $labels = array(
+    'name' => _x( 'Tagovi', 'taxonomy general name' ),
+    'singular_name' => _x( 'Tag', 'taxonomy singular name' ),
+    'search_items' =>  __( 'Pretraži tag' ),
+    'popular_items' => __( 'Popularni Tagovi' ),
+    'all_items' => __( 'Svi Tagovi' ),
+    'parent_item' => null,
+    'parent_item_colon' => null,
+    'edit_item' => __( 'Izmeni Tag' ), 
+    'update_item' => __( 'Izmeni Tag' ),
+    'add_new_item' => __( 'Dodaj Tag' ),
+    'new_item_name' => __( 'Novo Tag Ime' ),
+    'separate_items_with_commas' => __( 'Odvoji tagove zarezom' ),
+    'add_or_remove_items' => __( 'Dodaj ili ugloni tag' ),
+    'choose_from_most_used' => __( 'Izaberi najkorišćenije tagove' ),
+    'menu_name' => __( 'Tagovi' ),
+  ); 
+
+  register_taxonomy('oglasi_tagovi','oglasi',array(
+    'hierarchical' => false,
+    'labels' => $labels,
+    'show_ui' => true,
+    'update_count_callback' => '_update_post_term_count',
+    'query_var' => true,
+    'rewrite' => array( 'slug' => 'oglas-tag' ),
+  ));
+}
+
+
 
 /**
  *
@@ -111,7 +168,7 @@ function create_oglasi() {
         'public' => true, // show in admin panel?
         'menu_position' => 2,
         'supports' => array( 'title', 'thumbnail'),
-        'taxonomies' => array('post_tag'),
+        'taxonomies' => array('oglasi_tagovi'),
         'has_archive' => true,
         'capability_type' => 'post',
         'menu_icon'   => 'dashicons-location',
@@ -188,6 +245,7 @@ function create_lokacije() {
 add_action( 'init', 'create_lokacije' );
 
 
+
 //add custom user - Korisnik
 add_action( 'admin_init', 'customUsers');
 function customUsers() {
@@ -201,6 +259,13 @@ function removeAdminBarForKorisnik() {
         show_admin_bar(false);
     }
 }
+
+
+// Remove tags support from posts
+function myprefix_unregister_tags() {
+    unregister_taxonomy_for_object_type('post_tag', 'post');
+}
+add_action('init', 'myprefix_unregister_tags');
 
 
 /**

@@ -20,7 +20,7 @@ get_header(); ?>
 <?php while ( have_posts() ) : the_post(); ?>
 
 <div class="container">
-    <div class="row row-flex fl">
+    <div class="row-flex fl w-100">
         <div class="col-md-8">
 
             <section class="page-main-content">

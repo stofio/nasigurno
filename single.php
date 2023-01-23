@@ -49,16 +49,15 @@ get_header(); ?>
                     <?php 
                     //TAGS
                         $tags = get_the_tags(get_the_ID());
-                        echo '<ul class="single-tags">';
-                        echo '<h4>Tagovi</h4>';
-                        foreach ($tags as $tag) {
-                        echo '<li><a href="' . get_tag_link($tag->term_id) . '">' . $tag->name . '</a></li>';
+                        if($tags) {
+                            echo '<ul class="single-tags">';
+                            echo '<h4>Tagovi</h4>';
+                            foreach ($tags as $tag) {
+                                echo '<li><a href="' . get_tag_link($tag->term_id) . '">' . $tag->name . '</a></li>';
+                            }
+                            echo '</ul>';
                         }
-                        echo '</ul>';
                     ?>
-
-
-
             </section>
 
 

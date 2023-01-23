@@ -45,24 +45,31 @@
                         src="<?php echo esc_url( wp_get_attachment_image_src( get_theme_mod( 'custom_logo' ), 'full' )[0] ); ?>" />
                 </a>
             </div>
-            <?php if( ! is_home() && ! is_front_page() ) : ?>
+            <?php if( !is_home() && !is_front_page() ) : ?>
             <div class="header-search vis-header-search">
                 <div class="header-search-input-item">
                     <button class="header-search-button left-side">
                         <img src="<?php echo get_template_directory_uri() ?>/icons/search.svg" />
                     </button>
                     <input id="searchInput" type="search" placeholder="Pretraži" value="" />
+                    <button class="header-search-button left-side close-s">
+                        <img src="<?php echo get_template_directory_uri() ?>/icons/cross.svg" />
+                    </button>
                     <button class="header-search-button right-side hidden"><i class="fa fa-times"></i></button>
                     <ul id="searchres" class="autocomplete-list"></ul>
                 </div>
             </div>
             <?php endif; ?>
+            <?php if(!is_home() && !is_front_page()) : ?>
             <div class="show-search-button">
                 <img src="<?php echo get_template_directory_uri() ?>/icons/search.svg" />
             </div>
+            <?php endif; ?>
             <div id="headerUserMenu"></div>
-            <div class="nav-button-wrap">
-                <img src="<?php echo get_template_directory_uri() ?>/icons/menu.svg" />
+            <div class="nav-button-wrap hamb-cont">
+                <img class="hamb" src="<?php echo get_template_directory_uri() ?>/icons/menu.svg" />
+                <img style="display:none" class="close-hamb"
+                    src="<?php echo get_template_directory_uri() ?>/icons/cross.svg" />
             </div>
             <div id="logInOut">
                 <?php include(get_template_directory() . '/parts/header-login.php') ?>
@@ -74,25 +81,25 @@
                             <a class="main-menu-map-button" href="http://localhost/nasigurno/store-locator/">Mapa</a>
                         </li>
                         <li>
-                            <a name="gradovi meni" href="javascript:void(0);">Lokacije</a>
+                            <a name="gradovi meni" href="javascript:void(0);">
+                                Lokacije <span><img width="9"
+                                        src="<?php echo get_template_directory_uri() ?>/icons/arrow-down.svg" /></span>
+                            </a>
                             <ul>
-                                <li><a href="/drzave/rs">Srbija</a></li>
-                                <li><a href="/drzave/cg">Crna Gora</a></li>
-                                <li><a href="/drzave/bih">Bosna i Herzegovina</a></li>
-                                <li><a href="/drzave/hr">Hrvatska</a></li>
-                                <li><a href="/drzave/sl/">Slovenija</a></li>
-                                <li><a href="/drzave/makedonia/">Makedonija</a></li>
+                                <?php foreach(wp_get_nav_menu_items('drzave') as $key => $value) : ?>
+                                <li><a href="<?php echo $value->url ?>"><?php echo $value->title ?></a></li>
+                                <?php endforeach; ?>
                             </ul>
                         </li>
                         <li>
-                            <a name="magazin meni" href="javascript:void(0);">Pomoć<span class="num-new-posts"
-                                    style="display: none;"></span></a>
+                            <a name="magazin meni" href="javascript:void(0);">
+                                Pomoć <span><img width="9"
+                                        src="<?php echo get_template_directory_uri() ?>/icons/arrow-down.svg" /></span>
+                            </a>
                             <ul>
-                                <li><a href="#">Dobre priče</a></li>
-                                <li><a href="#">Vesti</a></li>
-                                <li><a href="#">Vodič</a></li>
-                                <li><a href="#">Zabavnik</a></li>
-                                <li><a href="#">Postanite autor</a></li>
+                                <?php foreach(wp_get_nav_menu_items('pomoc') as $key => $value) : ?>
+                                <li><a href="<?php echo $value->url ?>"><?php echo $value->title ?></a></li>
+                                <?php endforeach; ?>
                             </ul>
                         </li>
 
@@ -111,3 +118,42 @@
     <main id="main">
 
         <div id="wrapper">
+
+            <script>
+            // search input on mobile
+            $('.show-search-button, .header-search-button').on('click', function() {
+                var $searchInput = $('.header-search input');
+                if ($(window).width() <= 768) {
+                    if ($searchInput.hasClass('mobile-active')) {
+                        $searchInput.removeClass('mobile-active');
+                        $(".header-search").hide();
+                        $(".nav-button-wrap").css('display', 'block');
+                        $(".show-search-button").css('display', 'block');
+                        $("#logInOut").show();
+                    } else {
+                        $searchInput.addClass('mobile-active');
+                        $(".header-search").show();
+                        $(".show-search-button").hide();
+                        $(".nav-button-wrap").attr('style', 'display: none !important');
+                        $(".show-search-button").attr('style', 'display: none !important');
+                        $("#logInOut").hide();
+                    }
+                }
+            });
+
+            $('.nav-button-wrap').on('click', () => {
+                var $mobMenu = $('.nav-holder.main-menu');
+                if ($(window).width() <= 1180) {
+                    if ($mobMenu.hasClass('is-visible')) {
+                        $mobMenu.removeClass('is-visible');
+                        $('.hamb-cont .hamb').show(0);
+                        $('.hamb-cont .close-hamb').hide(0);
+
+                    } else {
+                        $mobMenu.addClass('is-visible');
+                        $('.hamb-cont .hamb').hide(0);
+                        $('.hamb-cont .close-hamb').show(0);
+                    }
+                }
+            });
+            </script>

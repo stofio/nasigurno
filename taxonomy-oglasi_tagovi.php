@@ -1,64 +1,42 @@
-<?php
-/*
-Taxonomy oblast CHILD 
-*/
-
-?>
-
 <?php get_header(); ?>
 
+<!--section -->
+<section class="gray-section top-padding no-overflow">
+    <div class="container">
+        <div class="section-title">
+            <h1>Tag: <span><?php echo single_cat_title(); ?></span></h1>
+        </div>
+        <div class="row row-flex fl">
+            <div class="col-md-8">
+                <div class="list-single-main-wrapper fl-wrap">
 
-<?php
-
-$term_id = get_queried_object()->term_id;
-
-//list all terms from current taxonomy
-$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-$args = array(
-    'post_type' => 'oglasi',
-    'posts_per_page' => 20,
-    'order' => 'DESC',
-    'orderby' => 'post_title',
-    'paged' => $paged,
-    'tax_query' => array(
-        'relation' => 'AND',
-        array(
-            'taxonomy' => 'oblast',
-            'field' => 'ID',
-            'terms' => $term_id
-        )
-     ),
-
-);
-$the_query = new WP_Query( $args );
-?>
-
-<div class="container">
-    <div class="row row-flex fl">
-        <div class="col-md-8">
-
-            <section class="page-main-content oblast-child">
-                <div class="box">
 
                     <?php
-                    $imgId = get_term_meta($term_id, 'pozadina', true);
-                    $ImgUrl = wp_get_attachment_image_src( $imgId, 'full' )[0];
+
+
+                    $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+                    $query = new WP_Query( array(
+                        'tax_query'      => array(
+                            array(
+                                'taxonomy'  => 'oglasi_tagovi',
+                                'field'     => 'slug',
+                                'terms'     => get_queried_object()->slug
+                            )
+                        ),
+                        'posts_per_page' => 5,
+                        'paged' => $paged
+                    ) );
                     
-                    if($ImgUrl) :
                     ?>
-                    <img class="tax-featured-img" src="<?php echo $ImgUrl ?>" />
-                    <?php endif; ?>
 
-                    <h1><?php echo removeCatBrackets(get_queried_object()->name) ?></h1>
-                    <p><?php echo get_queried_object()->description ?></p>
+                    <?php if ( $query->have_posts() ) : ?>
 
-                </div>
+                    <?php while ( $query->have_posts() ) : $query->the_post(); ?>
 
-                <?php if( $the_query->have_posts() ): ?>
-                <ul>
-                    <?php while( $the_query->have_posts() ) : $the_query->the_post(); ?>
+
 
                     <div class="box">
+
                         <div class="listing">
                             <?php
                             //get featured image
@@ -150,48 +128,76 @@ $the_query = new WP_Query( $args );
                         </div>
                     </div>
 
+
+
+
+
                     <?php endwhile; ?>
-                </ul>
-                <?php endif; ?>
 
-                <?php wp_reset_query(); ?>
+                    <?php wp_reset_postdata(); ?>
 
-                <div class="box cat-pag">
-                    <nav>
-                        <ul>
-                            <li><?php previous_posts_link( '&laquo; Nazad', $cpt_query->max_num_pages) ?></li>
-                            <li><?php next_posts_link( 'Napred &raquo;', $cpt_query->max_num_pages) ?></li>
-                        </ul>
-                    </nav>
+                    <?php else : ?>
+                    <p><?php _e( 'Nema rezultata.' ); ?></p>
+                    <?php endif; ?>
+
+
+                    <div class="box cat-pag">
+                        <nav>
+                            <ul>
+                                <li><?php previous_posts_link( '&laquo; Nazad', $query->max_num_pages) ?></li>
+                                <li><?php next_posts_link( 'Napred &raquo;', $query->max_num_pages) ?></li>
+                            </ul>
+                        </nav>
+                    </div>
+
+
+
+
                 </div>
 
-            </section>
+                <!-- pagination-->
+                <!-- <div class="row row-flex fl">
+                    <div class="col-md-8">
+                        <div class="list-single-main-wrapper fl-wrap">
+                            <div class="pagination">
 
-        </div>
+                                <a href="#" class="blog-page current-page transition">1</a>
+                                <a href="#" class="blog-page transition">2</a>
 
-        <div class="col-md-4">
-            <aside class="box-widget-wrap full-height">
-
-                <div class="sticky-sidebar small-top fl-wrap">
-                    <div class="box-widget-item fl-wrap">
-                        <div class="box-widget">
-                            <div class="box-widget-content">
-                                <div class="box-widget-item-header">
-                                    <h3>Widget: </h3>
-                                </div>
-                                <ul class="cat-item">
-                                    <li><a href="#">Option</a></li>
-                                    <li><a href="#">Option</a></li>
-                                </ul>
+                                <a href="#" class="nextposts-link"><i class="fa fa-caret-right"></i></a>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
+                <!-- pagination end-->
+            </div> <!-- col-md-8-->
 
-            </aside>
-        </div>
+            <div class="col-md-4">
+
+                <aside class="box-widget-wrap full-height">
+                    <div class="sticky-sidebar small-top fl-wrap">
+                        <div class="box-widget-item fl-wrap">
+                            <div class="box-widget">
+                                <div class="box-widget-content">
+                                    <div class="box-widget-item-header">
+                                        <h2>Kategorije: </h2>
+                                    </div>
+                                    <ul class="cat-item">
+                                        <li><a href="#">Vodič</a> <span>(12)</span></li>
+                                        <li><a href="#">Zabavnik</a> <span>(1)</span></li>
+                                        <li><a href="#">Vesti</a> <span>(6)</span></li>
+                                        <li><a href="#">Dobre priče</a> <span>(5)</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+            </div><!-- col-md-4-->
+        </div> <!-- col-md-row-->
     </div>
-</div>
+</section>
 
 
 <?php get_footer(); ?>

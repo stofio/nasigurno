@@ -2,11 +2,10 @@ $(document).ready(() => {
 
     var path = filesPath;
 
-    console.log(path)
 
     $('#searchInput').on('keyup focus', () => {
         $('#searchres').css('display', 'none');
-        var input = $('#searchInput').val();
+        var input = $('#searchInput').val().toLowerCase();
 
         if(input != '') {
             $.ajax({

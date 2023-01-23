@@ -30,7 +30,7 @@ Template Name: Moj Profil
             <div class="col-md-8">
 
                 <div class="box" id="mojProfil">
-                    <h2>Moj profil</h2>
+                    <h2>Podaci profila</h2>
 
                     <form id="profileForm" class="theme-form"
                         action="<?php echo get_template_directory_uri() ?>/scripts/save-user-data.php">
@@ -177,26 +177,7 @@ Template Name: Moj Profil
 
             <div class="col-md-4">
 
-                <aside class="box-widget-wrap full-height">
-
-                    <div class="sticky-sidebar small-top fl-wrap">
-                        <div class="box-widget-item fl-wrap">
-                            <div class="box-widget">
-                                <div class="box-widget-content">
-                                    <div class="box-widget-item-header">
-                                        <h3>Opcije: </h3>
-                                    </div>
-                                    <ul class="sidebar-opcije">
-                                        <li><a href="/moj-profil/#mojProfil">Moj profil</a></li>
-                                        <li><a href="/moj-profil/#promeniLozinku">Promeni lozinku</a></li>
-                                        <li><a href="/moji-oglasi/">Moji oglasi</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </aside>
+                <?php include(get_template_directory() . '/parts/sidebar-moj-profil.php') ?>
 
             </div><!-- col-md-4-->
 

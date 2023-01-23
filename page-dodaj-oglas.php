@@ -16,7 +16,7 @@ Template Name: Dodaj oglas
     <section id="novi-oglas">
 
         <div class="section-title">
-            <h1>Objavi novi oglasi</h1>
+            <h1>Objavi novi oglas</h1>
         </div>
 
         <div class="box" id="dodajOglas">

@@ -19,7 +19,7 @@
 </main>
 <footer>
     <section>
-        <div class="content-wrap">
+        <div class="content-wrap container">
             <img class="foot-logo" width="80"
                 src="<?php echo esc_url( wp_get_attachment_image_src( get_theme_mod( 'custom_logo' ), 'full' )[0] ); ?>" />
 
@@ -38,13 +38,11 @@
                     <li><a href="/registracija"><b>Registracija</b></a></li>
                     <?php else: ?>
                     <li><a href="/moj-profil"><b>Moj profil</b></a></li>
+                    <li><a href="/moji-oglasi"><b>Moji oglasi</b></a></li>
                     <?php endif; ?>
                 </ul>
 
             </div>
-
-
-
 
         </div>
     </section>
